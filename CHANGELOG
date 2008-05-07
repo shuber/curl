@@ -1,4 +1,8 @@
 2008-05-07 Sean Huber (shuber@huberry.com)
+	* Replaced '1' with 'true' in default curl_setopt options
+	* Updated README
+
+2008-05-07 Sean Huber (shuber@huberry.com)
 	* Updated README
 
 2008-05-07 Sean Huber (shuber@huberry.com)
