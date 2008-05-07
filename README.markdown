@@ -18,6 +18,7 @@ Usage
 -----
 
 Simply require and initialize the Curl class
+
 	require_once 'curl.php';
 	$curl = new Curl;
 
