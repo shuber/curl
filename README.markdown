@@ -1,12 +1,12 @@
 Curl, CurlResponse
 ==================
 
-Author: Sean Huber [http://github.com/shuber](http://github.com/shuber)
+Sean Huber [http://github.com/shuber](http://github.com/shuber)
 
 Description
 -----------
 
-A basic CURL wrapper written in PHP (see [http://php.net/curl](http://php.net/curl) for more information about the libcurl extension for PHP)
+A basic CURL wrapper for PHP (see [http://php.net/curl](http://php.net/curl) for more information about the libcurl extension for PHP)
 
 
 Installation
@@ -38,7 +38,8 @@ Examples
 
 	$response = $curl->get('google.com?q=test');
 
-	$response = $curl->get('google.com?q=test', array('some_variable' => 'some_value')); # The Curl object will append '&some_variable=some_value' to the url
+	# The Curl object will append '&some_variable=some_value' to the url
+	$response = $curl->get('google.com?q=test', array('some_variable' => 'some_value'));
 	
 	$response = $curl->post('test.com/posts', array('title' => 'Test', 'body' => 'This is a test'));
 
