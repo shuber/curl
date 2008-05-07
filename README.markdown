@@ -1,11 +1,12 @@
 Curl, CurlResponse
 ==================
 
+Author: Sean Huber [http://github.com/shuber](http://github.com/shuber)
+
 Description
 -----------
 
-A basic CURL wrapper written in PHP
-See [http://php.net/curl](http://php.net/curl) for more information about the libcurl extension for PHP
+A basic CURL wrapper written in PHP (see [http://php.net/curl](http://php.net/curl) for more information about the libcurl extension for PHP)
 
 
 Installation
@@ -26,7 +27,22 @@ Simply require and initialize the Curl class like so
 
 ### Performing a Request
 
-TODO
+The Curl object supports 4 types of requests: GET, POST, PUT, and DELETE. You must specify a url to request and optionally specify an associative array of variables to send along with it.
+
+	$response = $curl->get($url, $vars = array()); # The Curl object will append the array of $vars to the $url as a query string
+	$response = $curl->post($url, $vars = array());
+	$response = $curl->put($url, $vars = array());
+	$response = $curl->delete($url, $vars = array());
+
+Examples
+
+	$response = $curl->get('google.com?q=test');
+
+	$response = $curl->get('google.com?q=test', array('some_variable' => 'some_value')); # The Curl object will append '&some_variable=some_value' to the url
+	
+	$response = $curl->post('test.com/posts', array('title' => 'Test', 'body' => 'This is a test'));
+
+All requests return a CurlResponse object (see below)
 
 ### The CurlResponse Object
 
