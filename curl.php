@@ -7,7 +7,7 @@
 #
 # A basic CURL wrapper written in PHP
 #
-# See the README for documentation/examples or http://php.net/curl for more information about the CURL library for PHP
+# See the README for documentation/examples or http://php.net/curl for more information about the libcurl extension for PHP
 
 class Curl {
 

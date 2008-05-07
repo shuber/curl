@@ -1,4 +1,8 @@
 2008-05-07 Sean Huber (shuber@huberry.com)
+    * Removed test.php
+    * Ignored curl_cookie.txt
+
+2008-05-07 Sean Huber (shuber@huberry.com)
     * Added CHANGELOG
     * Added test.php
     * Added curl error numbers to error strings
