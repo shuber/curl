@@ -5,7 +5,7 @@
 # Author  Sean Huber - shuber@huberry.com
 # Date    May 2008
 #
-# A basic CURL wrapper written in PHP
+# A basic CURL wrapper for PHP
 #
 # See the README for documentation/examples or http://php.net/curl for more information about the libcurl extension for PHP
 
@@ -53,11 +53,11 @@ class Curl {
 		# Set some default CURL options
 		curl_setopt($handle, CURLOPT_COOKIEFILE, $this->cookie_file);
 		curl_setopt($handle, CURLOPT_COOKIEJAR, $this->cookie_file);
-		curl_setopt($handle, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($handle, CURLOPT_HEADER, 1);
+		curl_setopt($handle, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($handle, CURLOPT_HEADER, true);
 		curl_setopt($handle, CURLOPT_POSTFIELDS, $vars);
 		curl_setopt($handle, CURLOPT_REFERER, $this->referer);
-		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($handle, CURLOPT_URL, $url);
 		curl_setopt($handle, CURLOPT_USERAGENT, $this->user_agent);
 		
@@ -71,10 +71,10 @@ class Curl {
 		# Determine the request method and set the correct CURL option
 		switch ($method) {
 			case 'GET':
-				curl_setopt($handle, CURLOPT_HTTPGET, 1);
+				curl_setopt($handle, CURLOPT_HTTPGET, true);
 				break;
 			case 'POST':
-				curl_setopt($handle, CURLOPT_POST, 1);
+				curl_setopt($handle, CURLOPT_POST, true);
 				break;
 			default:
 				curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
