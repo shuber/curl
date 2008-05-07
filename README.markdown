@@ -17,16 +17,12 @@ git clone git://github.com/shuber/curl.git
 Usage
 -----
 
-TODO
-
-
-Examples
---------
-
-TODO
+Simply require and initialize the Curl class
+  require_once 'curl.php';
+  $curl = new Curl;
 
 
 Other
 -----
 
-Problems, comments, and suggestions all welcome: shuber@huberry.com
+Problems, comments, and suggestions all welcome: [shuber@huberry.com](mailto:shuber@huberry.com)
