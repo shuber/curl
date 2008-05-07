@@ -24,7 +24,7 @@ class Curl {
 	}
 
 	public function delete($url, $vars = array()) {
-	    return $this->request('DELETE', $url, $vars);
+		return $this->request('DELETE', $url, $vars);
 	}
 
 	public function error() {
@@ -32,61 +32,61 @@ class Curl {
 	}
 
 	public function get($url, $vars = array()) {
-	    if (!empty($vars)) {
-	        $url .= (stripos($url, '?') !== false) ? '&' : '?';
-	        $url .= http_build_query($vars);
-	    }
-	    return $this->request('GET', $url);
+		if (!empty($vars)) {
+			$url .= (stripos($url, '?') !== false) ? '&' : '?';
+			$url .= http_build_query($vars);
+		}
+		return $this->request('GET', $url);
 	}
 
 	public function post($url, $vars = array()) {
-	    return $this->request('POST', $url, $vars);
+		return $this->request('POST', $url, $vars);
 	}
 
 	public function put($url, $vars = array()) {
-	    return $this->request('PUT', $url, $vars);
+		return $this->request('PUT', $url, $vars);
 	}
 
 	protected function request($method, $url, $vars = array()) {
-        $handle = curl_init();
-        
-        # Set some default CURL options
-        curl_setopt($handle, CURLOPT_COOKIEFILE, $this->cookie_file);
-        curl_setopt($handle, CURLOPT_COOKIEJAR, $this->cookie_file);
-        curl_setopt($handle, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($handle, CURLOPT_HEADER, 1);
-        curl_setopt($handle, CURLOPT_HTTPHEADER, $this->headers);
-        curl_setopt($handle, CURLOPT_POSTFIELDS, $vars);
-        curl_setopt($handle, CURLOPT_REFERER, $this->referer);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($handle, CURLOPT_URL, $url);
-        curl_setopt($handle, CURLOPT_USERAGENT, $this->user_agent);
-        
-        # Determine the request method and set the correct CURL option
-        switch ($method) {
-            case 'GET':
-                curl_setopt($handle, CURLOPT_HTTPGET, 1);
-                break;
-            case 'POST':
-                curl_setopt($handle, CURLOPT_POST, 1);
-                break;
-            default:
-                curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
-        }
-        
-        # Set any custom CURL options
-        foreach ($this->options as $option => $value) {
-            curl_setopt($handle, constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($option))), $value);
-        }
-        
-        $response = curl_exec($handle);
-        if ($response) {
-        	$response = new CurlResponse($response);
-        } else {
-        	$this->error = curl_errno($handle).' - '.curl_error($handle);
-        }
-        curl_close($handle);
-        return $response;
+		$handle = curl_init();
+		
+		# Set some default CURL options
+		curl_setopt($handle, CURLOPT_COOKIEFILE, $this->cookie_file);
+		curl_setopt($handle, CURLOPT_COOKIEJAR, $this->cookie_file);
+		curl_setopt($handle, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($handle, CURLOPT_HEADER, 1);
+		curl_setopt($handle, CURLOPT_HTTPHEADER, $this->headers);
+		curl_setopt($handle, CURLOPT_POSTFIELDS, $vars);
+		curl_setopt($handle, CURLOPT_REFERER, $this->referer);
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($handle, CURLOPT_URL, $url);
+		curl_setopt($handle, CURLOPT_USERAGENT, $this->user_agent);
+		
+		# Determine the request method and set the correct CURL option
+		switch ($method) {
+			case 'GET':
+				curl_setopt($handle, CURLOPT_HTTPGET, 1);
+				break;
+			case 'POST':
+				curl_setopt($handle, CURLOPT_POST, 1);
+				break;
+			default:
+				curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
+		}
+		
+		# Set any custom CURL options
+		foreach ($this->options as $option => $value) {
+			curl_setopt($handle, constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($option))), $value);
+		}
+		
+		$response = curl_exec($handle);
+		if ($response) {
+			$response = new CurlResponse($response);
+		} else {
+			$this->error = curl_errno($handle).' - '.curl_error($handle);
+		}
+		curl_close($handle);
+		return $response;
 	}
 
 }

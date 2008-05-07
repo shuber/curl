@@ -1,4 +1,8 @@
 2008-05-07 Sean Huber (shuber@huberry.com)
+    * Converted curl.php to hard tabs
+    * Updated README
+
+2008-05-07 Sean Huber (shuber@huberry.com)
     * Removed test.php
     * Ignored curl_cookie.txt
 
