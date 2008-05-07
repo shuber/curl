@@ -61,12 +61,11 @@ Which would display something like
 	    [Connection] => close
 	)
 	
-The CurlResponse class defines the magic [__toString()](http://php.net/__toString) method which will return the response body
-So `echo $response` is the same as `echo $response->body`
+The CurlResponse class defines the magic [__toString()](http://php.net/__toString) method which will return the response body, so `echo $response` is the same as `echo $response->body`
 
 ### Cookie Sessions
 
-By default, cookies will be stored in a file called `curl_cookie.txt`. You can change this file's name by setting it like so
+By default, cookies will be stored in a file called `curl_cookie.txt`. You can change this file's name by setting it like this
 
 	$curl->cookie_file = 'some_other_filename';
 
@@ -74,7 +73,7 @@ This allows you to maintain a session across requests
 
 ### Basic Configuration Options
 
-You can easily set the referer or user-agent like so
+You can easily set the referer or user-agent
 
 	$curl->referer = 'http://google.com';
 	$curl->user_agent = 'some user agent string';
@@ -83,14 +82,14 @@ You may even set these headers manually if you wish (see below)
 
 ### Setting Custom Headers
 
-You can set custom headers to send with the request like so
+You can set custom headers to send with the request
 
 	$curl->headers['Host'] = 12.345.678.90;
 	$curl->headers['Some-Custom-Header'] = 'Some Custom Value';
 
 ### Setting Custom CURL request options
 
-You can set/override many different options for CURL requests (see the [curl_setopt documentation](http://php.net/curl_setopt) for a list of them) like so
+You can set/override many different options for CURL requests (see the [curl_setopt documentation](http://php.net/curl_setopt) for a list of them)
 
 	# any of these will work
 	$curl->options['AUTOREFERER'] = true;
@@ -99,7 +98,7 @@ You can set/override many different options for CURL requests (see the [curl_set
 	$curl->options['curlopt_autoreferer'] = true;
 
 
-Other
------
+Contact
+-------
 
 Problems, comments, and suggestions all welcome: [shuber@huberry.com](mailto:shuber@huberry.com)
