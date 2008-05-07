@@ -17,7 +17,7 @@ class Curl {
 	public $referer = '';
 	public $user_agent = '';
 
-	private $error = '';
+	protected $error = '';
 
 	public function __construct() {
 		$this->user_agent = $_SERVER['HTTP_USER_AGENT'];
@@ -47,7 +47,7 @@ class Curl {
 	    return $this->request('PUT', $url, $vars);
 	}
 
-	private function request($method, $url, $vars = array()) {
+	protected function request($method, $url, $vars = array()) {
         $handle = curl_init();
         
         # Set some default CURL options
@@ -76,14 +76,14 @@ class Curl {
         
         # Set any custom CURL options
         foreach ($this->options as $option => $value) {
-            curl_setopt($handle, constant('CURLOPT_'.strtoupper($option)), $value);
+            curl_setopt($handle, constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($option))), $value);
         }
         
         $response = curl_exec($handle);
         if ($response) {
         	$response = new CurlResponse($response);
         } else {
-        	$this->error = curl_error($handle);
+        	$this->error = curl_errno($handle).' - '.curl_error($handle);
         }
         curl_close($handle);
         return $response;
@@ -119,7 +119,7 @@ class CurlResponse {
 		$this->body = preg_replace($pattern, '', $response);
 	}
 
-	public function toString() {
+	public function __toString() {
 		return $this->body;
 	}
 

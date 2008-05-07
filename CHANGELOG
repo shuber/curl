@@ -1,0 +1,6 @@
+2008-05-07 Sean Huber (shuber@huberry.com)
+    * Added CHANGELOG
+    * Added test.php
+    * Added curl error numbers to error strings
+    * Curl options prefixed with CURLOPT_ will still work
+    * Fixed Bug: Renamed CurlResponse#toString() to CurlResponse#__toString()
