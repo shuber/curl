@@ -55,12 +55,18 @@ class Curl {
 		curl_setopt($handle, CURLOPT_COOKIEJAR, $this->cookie_file);
 		curl_setopt($handle, CURLOPT_FOLLOWLOCATION, 1);
 		curl_setopt($handle, CURLOPT_HEADER, 1);
-		curl_setopt($handle, CURLOPT_HTTPHEADER, $this->headers);
 		curl_setopt($handle, CURLOPT_POSTFIELDS, $vars);
 		curl_setopt($handle, CURLOPT_REFERER, $this->referer);
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($handle, CURLOPT_URL, $url);
 		curl_setopt($handle, CURLOPT_USERAGENT, $this->user_agent);
+		
+		# Format custom headers for this request and set CURL option
+		$headers = array();
+		foreach ($this->headers as $key => $value) {
+			$headers[] = $key.': '.$value;
+		}
+		curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
 		
 		# Determine the request method and set the correct CURL option
 		switch ($method) {
