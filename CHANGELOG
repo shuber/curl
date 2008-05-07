@@ -1,4 +1,7 @@
 2008-05-07 Sean Huber (shuber@huberry.com)
+	* Updated README
+
+2008-05-07 Sean Huber (shuber@huberry.com)
 	* Fixed Bug: Custom headers were not being sent correctly for requests
 	* Updated README
 

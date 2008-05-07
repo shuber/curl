@@ -50,7 +50,13 @@ You can set custom headers to send with the request like so
 
 ### Setting Custom CURL request options
 
-TODO
+You can set many different options for CURL requests (see the [curl_setopt documentation](http://php.net/curl_setopt) for a list of them) like so
+
+	# any of these will work
+	$curl->options['AUTOREFERER'] = true;
+	$curl->options['autoreferer'] = true;
+	$curl->options['CURLOPT_AUTOREFERER'] = true;
+	$curl->options['curlopt_autoreferer'] = true;
 
 
 Other
