@@ -24,13 +24,53 @@ Simply require and initialize the Curl class like so
 	require_once 'curl.php';
 	$curl = new Curl;
 
-### Requests
+### Performing a Request
 
 TODO
 
 ### The CurlResponse Object
 
-TODO
+A normal CURL request will return the headers and the body in one response string. This class parses the two and places them into separate properties.
+
+For example
+
+	$response = $curl->get('google.com');
+	echo $response->body; # A string containing everything in the response except for the headers
+	print_r($response->headers); # An associative array containing the response headers
+
+Which would display something like
+
+	<html>
+	<head>
+	<title>Google.com</title>
+	</head>
+	<body>
+	Some more html...
+	</body>
+	</html>
+
+	Array
+	(
+	    [Http-Version] => 1.0
+	    [Status-Code] => 200
+	    [Status] => 200 OK
+	    [Cache-Control] => private
+	    [Content-Type] => text/html; charset=ISO-8859-1
+	    [Date] => Wed, 07 May 2008 21:43:48 GMT
+	    [Server] => gws
+	    [Connection] => close
+	)
+	
+The CurlResponse class defines the magic [__toString()](http://php.net/__toString) method which will return the response body
+So `echo $response` is the same as `echo $response->body`
+
+### Cookie Sessions
+
+By default, cookies will be stored in a file called `curl_cookie.txt`. You can change this file's name by setting it like so
+
+	$curl->cookie_file = 'some_other_filename';
+
+This allows you to maintain a session across requests
 
 ### Basic Configuration Options
 
@@ -50,7 +90,7 @@ You can set custom headers to send with the request like so
 
 ### Setting Custom CURL request options
 
-You can set many different options for CURL requests (see the [curl_setopt documentation](http://php.net/curl_setopt) for a list of them) like so
+You can set/override many different options for CURL requests (see the [curl_setopt documentation](http://php.net/curl_setopt) for a list of them) like so
 
 	# any of these will work
 	$curl->options['AUTOREFERER'] = true;
