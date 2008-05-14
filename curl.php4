@@ -11,28 +11,29 @@
 
 class Curl {
 
-	public $cookie_file = 'curl_cookie.txt';
-	public $headers = array();
-	public $options = array();
-	public $referer = '';
-	public $user_agent = '';
+	var $cookie_file = 'curl_cookie.txt';
+	var $headers = array();
+	var $options = array();
+	var $referer = '';
+	var $user_agent = '';
+	
+	# Protected
+	var $error = '';
+	var $handle;
 
-	protected $error = '';
-	protected $handle;
-
-	public function __construct() {
+	function Curl() {
 		$this->user_agent = $_SERVER['HTTP_USER_AGENT'];
 	}
 
-	public function delete($url, $vars = array()) {
+	function delete($url, $vars = array()) {
 		return $this->request('DELETE', $url, $vars);
 	}
 
-	public function error() {
+	function error() {
 		return $this->error;
 	}
 
-	public function get($url, $vars = array()) {
+	function get($url, $vars = array()) {
 		if (!empty($vars)) {
 			$url .= (stripos($url, '?') !== false) ? '&' : '?';
 			$url .= http_build_query($vars);
@@ -40,15 +41,16 @@ class Curl {
 		return $this->request('GET', $url);
 	}
 
-	public function post($url, $vars = array()) {
+	function post($url, $vars = array()) {
 		return $this->request('POST', $url, $vars);
 	}
 
-	public function put($url, $vars = array()) {
+	function put($url, $vars = array()) {
 		return $this->request('PUT', $url, $vars);
 	}
 
-	protected function request($method, $url, $vars = array()) {
+	# Protected
+	function request($method, $url, $vars = array()) {
 		$this->handle = curl_init();
 		
 		# Set some default CURL options
@@ -100,10 +102,10 @@ class Curl {
 
 class CurlResponse {
 
-	public $body = '';
-	public $headers = array();
+	var $body = '';
+	var $headers = array();
 
-	public function __construct($response) {
+	function __construct($response) {
 		# Extract headers from response
 		$pattern = '#HTTP/\d\.\d.*?$.*?\r\n\r\n#ims';
 		preg_match_all($pattern, $response, $matches);
@@ -126,7 +128,7 @@ class CurlResponse {
 		$this->body = preg_replace($pattern, '', $response);
 	}
 
-	public function __toString() {
+	function __toString() {
 		return $this->body;
 	}
 

@@ -1,4 +1,8 @@
 2008-05-13 - Sean Huber (shuber@huberry.com)
+	* Added protected $handle property to use during requests
+	* Added php4 version of the curl class
+
+2008-05-13 - Sean Huber (shuber@huberry.com)
 	* Fixed bug: post variables were not being sent correctly
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
