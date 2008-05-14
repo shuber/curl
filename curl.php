@@ -55,7 +55,7 @@ class Curl {
 		curl_setopt($handle, CURLOPT_COOKIEJAR, $this->cookie_file);
 		curl_setopt($handle, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($handle, CURLOPT_HEADER, true);
-		curl_setopt($handle, CURLOPT_POSTFIELDS, $vars);
+		curl_setopt($handle, CURLOPT_POSTFIELDS, http_build_query($vars));
 		curl_setopt($handle, CURLOPT_REFERER, $this->referer);
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($handle, CURLOPT_URL, $url);
