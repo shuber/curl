@@ -152,3 +152,43 @@ class CurlResponse
         return $this->body;
     }
 }
+
+/**
+ * http_build_query exists from PHP >= 5.0
+ * If !function_exists then declare it.
+ */
+if(!function_exists('http_build_query')) {
+    
+    /**
+     * Generate URL-encoded query string.
+     * See http://php.net/http_build_query for more details.
+     *
+     * @param   mixed   $formdata
+     * @param   string  $numeric_prefix
+     * @param   string  $arg_separator
+     * @param   string  $key
+     * @return  string
+     * @link    http://php.net/http_build_query
+     */
+    function http_build_query($formdata, $numeric_prefix = null, $arg_separator = null, $key = null) {
+        $res = array();
+        
+        foreach ((array)$formdata as $k => $v) {
+            $tmp_key = urlencode(is_int($k) ? $numeric_prefix.$k : $k);
+            if ($key !== null) {
+                $tmp_key = $key.'['.$tmp_key.']';
+            }
+            if (is_array($v) || is_object($v)) {
+                $res[] = http_build_query($v, null, $arg_separator, $tmp_key);
+            } else {
+                $res[] = $tmp_key . "=" . urlencode($v);
+            }
+        }
+        
+        if ($arg_separator === null) {
+          $arg_separator = ini_get("arg_separator.output");
+        }
+        
+        return implode($arg_separator, $res);
+    }
+}
