@@ -11,7 +11,6 @@
 
 class Curl 
 {
-
     var $cookie_file = 'curl_cookie.txt';
     var $headers = array();
     var $options = array();
@@ -115,7 +114,6 @@ class Curl
 
 class CurlResponse 
 {
-    
     var $body = '';
     var $headers = array();
     

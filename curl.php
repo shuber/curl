@@ -11,7 +11,6 @@
 
 class Curl 
 {
-
     public $cookie_file = 'curl_cookie.txt';
     public $headers = array();
     public $options = array();
@@ -109,7 +108,6 @@ class Curl
 
 class CurlResponse 
 {
-
     public $body = '';
     public $headers = array();
 
