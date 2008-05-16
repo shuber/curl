@@ -21,10 +21,14 @@ class Curl {
 	var $error = '';
 	var $handle;
 
-	function Curl() {
-		$this->user_agent = $_SERVER['HTTP_USER_AGENT'];
-	}
+    function Curl() {
+        $this->__construct();
+    }
 
+    function __construct() {
+        $this->user_agent = $_SERVER['HTTP_USER_AGENT'];
+    }
+    
 	function delete($url, $vars = array()) {
 		return $this->request('DELETE', $url, $vars);
 	}
@@ -105,6 +109,12 @@ class CurlResponse {
 	var $body = '';
 	var $headers = array();
 
+
+	function CurlResponse($response)
+	{
+	    $this->__construct($response);
+	}
+	
 	function __construct($response) {
 		# Extract headers from response
 		$pattern = '#HTTP/\d\.\d.*?$.*?\r\n\r\n#ims';
