@@ -142,5 +142,3 @@ class CurlResponse
         return $this->body;
     }
 }
-
-?>
