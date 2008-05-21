@@ -1,6 +1,9 @@
 2008-05-16 - Simone Carletti (weppos@weppos.net)
-    * Fixed PHP 4 compatibility (__construct and http_build_query methods)
-    * Various code touch up to be compatibile with Zend Framework coding standard (just because actually it's the best collection of PHP coding standard available)
+    * FIXED: $this->user_agent raises a notice when HTTP_USER_AGENT server variable is empty.
+
+2008-05-16 - Simone Carletti (weppos@weppos.net)
+    * FIXED: PHP 4 compatibility (__construct and http_build_query methods)
+    * CHANGED: Various code touch up to be compatibile with Zend Framework coding standard (just because actually it's the best collection of PHP coding standard available)
 
 2008-05-13 - Sean Huber (shuber@huberry.com)
     * Added protected $handle property to use during requests

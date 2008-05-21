@@ -29,7 +29,9 @@ class Curl
     
     function __construct() 
     {
-        $this->user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $this->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ?
+            $_SERVER['HTTP_USER_AGENT'] :
+            'Curl/PHP ' . PHP_VERSION . ' (http://github.com/shuber/curl/)';
     }
       
     function delete($url, $vars = array()) 
