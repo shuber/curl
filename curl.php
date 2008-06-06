@@ -42,7 +42,7 @@ class Curl
     {
         if (!empty($vars)) {
             $url .= (stripos($url, '?') !== false) ? '&' : '?';
-            $url .= http_build_query($vars);
+            $url .= http_build_query($vars, '', '&');
         }
         return $this->request('GET', $url);
     }
@@ -66,7 +66,7 @@ class Curl
         curl_setopt($this->handle, CURLOPT_COOKIEJAR, $this->cookie_file);
         curl_setopt($this->handle, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($this->handle, CURLOPT_HEADER, true);
-        curl_setopt($this->handle, CURLOPT_POSTFIELDS, http_build_query($vars));
+        curl_setopt($this->handle, CURLOPT_POSTFIELDS, (is_array($vars) ? http_build_query($vars, '', '&') : $vars));
         curl_setopt($this->handle, CURLOPT_REFERER, $this->referer);
         curl_setopt($this->handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->handle, CURLOPT_URL, $url);

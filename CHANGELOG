@@ -1,3 +1,7 @@
+2008-06-05 - Sean Huber (shuber@huberry.com)
+	* Post variables can be passed to the request() method as a query string or array
+	* Specified the argument separator for the http_build_query() function
+
 2008-05-16 - Simone Carletti (weppos@weppos.net)
     * FIXED: $this->user_agent raises a notice when HTTP_USER_AGENT server variable is empty.
 
