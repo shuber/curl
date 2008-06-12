@@ -1,61 +1,64 @@
+2008-06-12 - Sean Huber (shuber@huberry.com)
+	* $curl->cookie_file defaults to curl_cookie.txt using an absolute path
+
 2008-06-05 - Sean Huber (shuber@huberry.com)
 	* Post variables can be passed to the request() method as a query string or array
 	* Specified the argument separator for the http_build_query() function
 
 2008-05-16 - Simone Carletti (weppos@weppos.net)
-    * FIXED: $this->user_agent raises a notice when HTTP_USER_AGENT server variable is empty.
+	* FIXED: $this->user_agent raises a notice when HTTP_USER_AGENT server variable is empty.
 
 2008-05-16 - Simone Carletti (weppos@weppos.net)
-    * FIXED: PHP 4 compatibility (__construct and http_build_query methods)
-    * CHANGED: Various code touch up to be compatibile with Zend Framework coding standard (just because actually it's the best collection of PHP coding standard available)
+	* FIXED: PHP 4 compatibility (__construct and http_build_query methods)
+	* CHANGED: Various code touch up to be compatibile with Zend Framework coding standard (just because actually it's the best collection of PHP coding standard available)
 
 2008-05-13 - Sean Huber (shuber@huberry.com)
-    * Added protected $handle property to use during requests
-    * Added php4 version of the curl class
+	* Added protected $handle property to use during requests
+	* Added php4 version of the curl class
 
 2008-05-13 - Sean Huber (shuber@huberry.com)
-    * Fixed bug: post variables were not being sent correctly
+	* Fixed bug: post variables were not being sent correctly
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Replaced '1' with 'true' in default curl_setopt options
-    * Updated README
+	* Replaced '1' with 'true' in default curl_setopt options
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Updated README
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Updated README
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Updated README
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Updated README
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Fixed Bug: Custom headers were not being sent correctly for requests
-    * Updated README
+	* Fixed Bug: Custom headers were not being sent correctly for requests
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Converted README to hard tabs
+	* Converted README to hard tabs
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Updated README
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Updated README
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Converted curl.php to hard tabs
-    * Updated README
+	* Converted curl.php to hard tabs
+	* Updated README
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Removed test.php
-    * Ignored curl_cookie.txt
+	* Removed test.php
+	* Ignored curl_cookie.txt
 
 2008-05-07 - Sean Huber (shuber@huberry.com)
-    * Added CHANGELOG
-    * Added test.php
-    * Added curl error numbers to error strings
-    * Curl options prefixed with CURLOPT_ will still work
-    * Fixed Bug: Renamed CurlResponse#toString() to CurlResponse#__toString()
+	* Added CHANGELOG
+	* Added test.php
+	* Added curl error numbers to error strings
+	* Curl options prefixed with CURLOPT_ will still work
+	* Fixed Bug: Renamed CurlResponse#toString() to CurlResponse#__toString()
