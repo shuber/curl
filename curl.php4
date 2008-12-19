@@ -29,7 +29,7 @@ class Curl
     
     function __construct() 
     {
-				$this->cookie_file = realpath('.').'/curl_cookie.txt';
+        $this->cookie_file = dirname(__FILE__).'/curl_cookie.txt';
         $this->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ?
             $_SERVER['HTTP_USER_AGENT'] :
             'Curl/PHP ' . PHP_VERSION . ' (http://github.com/shuber/curl/)';

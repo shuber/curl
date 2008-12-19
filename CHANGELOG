@@ -1,3 +1,6 @@
+2008-12-19 - Sean Huber (shuber@huberry.com)
+  * Use dirname(__FILE__) instead of realpath('.')
+
 2008-06-12 - Sean Huber (shuber@huberry.com)
 	* $curl->cookie_file defaults to curl_cookie.txt using an absolute path
 
