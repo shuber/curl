@@ -69,6 +69,18 @@ class Curl
     {
         $this->handle = curl_init();
         
+        # Determine the request method and set the correct CURL option
+        switch ($method) {
+            case 'GET':
+                curl_setopt($this->handle, CURLOPT_HTTPGET, true);
+                break;
+            case 'POST':
+                curl_setopt($this->handle, CURLOPT_POST, true);
+                break;
+            default:
+                curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $method);
+        }
+        
         # Set some default CURL options
         curl_setopt($this->handle, CURLOPT_COOKIEFILE, $this->cookie_file);
         curl_setopt($this->handle, CURLOPT_COOKIEJAR, $this->cookie_file);
@@ -86,18 +98,6 @@ class Curl
             $headers[] = $key.': '.$value;
         }
         curl_setopt($this->handle, CURLOPT_HTTPHEADER, $headers);
-        
-        # Determine the request method and set the correct CURL option
-        switch ($method) {
-            case 'GET':
-                curl_setopt($this->handle, CURLOPT_HTTPGET, true);
-                break;
-            case 'POST':
-                curl_setopt($this->handle, CURLOPT_POST, true);
-                break;
-            default:
-                curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $method);
-        }
         
         # Set any custom CURL options
         foreach ($this->options as $option => $value) {

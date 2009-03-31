@@ -1,3 +1,6 @@
+2009-03-30 - Sean Huber (shuber@huberry.com)
+  * Set the POSTFIELDS after setting the request method
+
 2008-12-19 - Sean Huber (shuber@huberry.com)
   * Use dirname(__FILE__) instead of realpath('.')
 
