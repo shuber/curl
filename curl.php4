@@ -86,7 +86,7 @@ class Curl
         curl_setopt($this->handle, CURLOPT_COOKIEJAR, $this->cookie_file);
         curl_setopt($this->handle, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($this->handle, CURLOPT_HEADER, true);
-        curl_setopt($this->handle, CURLOPT_POSTFIELDS, (is_array($vars) ? http_build_query($vars, '', '&') : $vars));
+        if (!empty($vars)) curl_setopt($this->handle, CURLOPT_POSTFIELDS, (is_array($vars) ? http_build_query($vars, '', '&') : $vars));
         curl_setopt($this->handle, CURLOPT_REFERER, $this->referer);
         curl_setopt($this->handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->handle, CURLOPT_URL, $url);

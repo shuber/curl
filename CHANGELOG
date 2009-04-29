@@ -1,3 +1,6 @@
+2009-04-29 - Sean Huber (shuber@huberry.com)
+  * POSTFIELDS are not set unless specified
+
 2009-03-30 - Sean Huber (shuber@huberry.com)
   * Set the POSTFIELDS after setting the request method
 
