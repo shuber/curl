@@ -128,6 +128,13 @@ You can set/override many different options for CURL requests (see the [curl_set
 	$curl->options['curlopt_autoreferer'] = true;
 
 
+## Testing
+
+Uses [ztest](http://github.com/jaz303/ztest), simply download it to `path/to/curl/test/ztest` (or anywhere else in your php include_path)
+
+Then run `test/runner.php`
+
+
 ## Contact
 
 Problems, comments, and suggestions all welcome: [shuber@huberry.com](mailto:shuber@huberry.com)
