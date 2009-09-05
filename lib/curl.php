@@ -10,16 +10,70 @@
 **/
 class Curl {
     
+    /**
+     * The file to read and write cookies to for requests
+     *
+     * @var string
+    **/
     public $cookie_file;
+    
+    /**
+     * Determines whether or not requests should follow redirects
+     *
+     * @var boolean
+    **/
     public $follow_redirects = true;
+    
+    /**
+     * An associative array of headers to send along with requests
+     *
+     * @var array
+    **/
     public $headers = array();
+    
+    /**
+     * An associative array of CURLOPT options to send along with requests
+     *
+     * @var array
+    **/
     public $options = array();
+    
+    /**
+     * The referer header to send along with requests
+     *
+     * @var string
+    **/
     public $referer;
+    
+    /**
+     * The user agent to send along with requests
+     *
+     * @var string
+    **/
     public $user_agent;
     
+    /**
+     * Stores an error string for the last request if one occurred
+     *
+     * @var string
+     * @access protected
+    **/
     protected $error = '';
+    
+    /**
+     * Stores resource handle for the current CURL request
+     *
+     * @var resource
+     * @access protected
+    **/
     protected $request;
     
+    /**
+     * Initializes a Curl object
+     *
+     * Sets the $cookie_file to "curl_cookie.txt" in the current directory
+     * Also sets the $user_agent to $_SERVER['HTTP_USER_AGENT'] if it exists, 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)' otherwise
+    **/
     public function __construct() {
         $this->cookie_file = dirname(__FILE__).DIRECTORY_SEPARATOR.'curl_cookie.txt';
         $this->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)';
