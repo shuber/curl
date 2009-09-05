@@ -155,7 +155,7 @@ class Curl {
      * @access protected
     **/
     protected function set_request_method($method) {
-        switch ($method) {
+        switch (strtoupper($method)) {
             case 'HEAD':
                 curl_setopt($this->request, CURLOPT_NOBODY, true);
                 break;

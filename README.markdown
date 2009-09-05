@@ -1,40 +1,43 @@
-Curl, CurlResponse
-==================
-
-Sean Huber [http://github.com/shuber](http://github.com/shuber)
-
-Description
------------
+# Curl, CurlResponse
 
 A basic CURL wrapper for PHP (see [http://php.net/curl](http://php.net/curl) for more information about the libcurl extension for PHP)
 
 
-Installation
-------------
+## Installation
 
-	git clone git://github.com/shuber/curl.git
+Click the `download` link above or `git clone git://github.com/shuber/curl.git`
 
 
-Usage
------
+## Usage
 
 ### Initialization
 
-Simply require and initialize the Curl class like so
+Simply require and initialize the `Curl` class like so:
 
 	require_once 'curl.php';
 	$curl = new Curl;
 
 ### Performing a Request
 
-The Curl object supports 4 types of requests: GET, POST, PUT, and DELETE. You must specify a url to request and optionally specify an associative array of variables to send along with it.
+The Curl object supports 5 types of requests: HEAD, GET, POST, PUT, and DELETE. You must specify a url to request and optionally specify an associative array or string of variables to send along with it.
 
+	$response = $curl->head($url, $vars = array());
 	$response = $curl->get($url, $vars = array()); # The Curl object will append the array of $vars to the $url as a query string
 	$response = $curl->post($url, $vars = array());
 	$response = $curl->put($url, $vars = array());
 	$response = $curl->delete($url, $vars = array());
 
-Examples
+To use a custom request methods, you can call the `request` method:
+
+	$response = $curl->request('YOUR_CUSTOM_REQUEST_TYPE', $url, $vars = array());
+
+All of the built in request methods like `put`, `get`, etc simply wrap the `request` method. For example, the `post` is implemented like:
+
+	function post($url, $vars = array()) {
+	    return $this->request('POST', $url, $vars);
+	}
+
+Examples:
 
 	$response = $curl->get('google.com?q=test');
 
@@ -43,7 +46,8 @@ Examples
 	
 	$response = $curl->post('test.com/posts', array('title' => 'Test', 'body' => 'This is a test'));
 
-All requests return a CurlResponse object (see below)
+All requests return a CurlResponse object or false if an error occurred (see below)
+
 
 ### The CurlResponse Object
 
@@ -80,6 +84,7 @@ Which would display something like
 	
 The CurlResponse class defines the magic [__toString()](http://php.net/__toString) method which will return the response body, so `echo $response` is the same as `echo $response->body`
 
+
 ### Cookie Sessions
 
 By default, cookies will be stored in a file called `curl_cookie.txt`. You can change this file's name by setting it like this
@@ -88,14 +93,16 @@ By default, cookies will be stored in a file called `curl_cookie.txt`. You can c
 
 This allows you to maintain a session across requests
 
+
 ### Basic Configuration Options
 
 You can easily set the referer or user-agent
 
 	$curl->referer = 'http://google.com';
 	$curl->user_agent = 'some user agent string';
-	
+
 You may even set these headers manually if you wish (see below)
+
 
 ### Setting Custom Headers
 
@@ -104,7 +111,12 @@ You can set custom headers to send with the request
 	$curl->headers['Host'] = 12.345.678.90;
 	$curl->headers['Some-Custom-Header'] = 'Some Custom Value';
 
+
 ### Setting Custom CURL request options
+
+By default, the `Curl` object will follow redirects. You can disable this by setting:
+
+	$curl->follow_redirects = false;
 
 You can set/override many different options for CURL requests (see the [curl_setopt documentation](http://php.net/curl_setopt) for a list of them)
 
@@ -115,7 +127,6 @@ You can set/override many different options for CURL requests (see the [curl_set
 	$curl->options['curlopt_autoreferer'] = true;
 
 
-Contact
--------
+## Contact
 
 Problems, comments, and suggestions all welcome: [shuber@huberry.com](mailto:shuber@huberry.com)
