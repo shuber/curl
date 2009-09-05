@@ -35,15 +35,16 @@ class CurlResponse {
      * @param string $response
     **/
     public function __construct($response) {
-        # Headers
+        # Headers regex
         $pattern = '#HTTP/\d\.\d.*?$.*?\r\n\r\n#ims';
         
         # Extract headers from response
         preg_match_all($pattern, $response, $matches);
-        $headers = split("\r\n", str_replace("\r\n\r\n", '', array_pop($matches[0])));
+        $headers_string = array_pop($matches[0]);
+        $headers = split("\r\n", str_replace("\r\n\r\n", '', $headers_string));
         
         # Remove headers from the response body
-        $this->body = preg_replace($pattern, '', $response);
+        $this->body = str_replace($headers_string, '', $response);
         
         # Extract the version and status from the first header
         $version_and_status = array_shift($headers);
