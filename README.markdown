@@ -1,4 +1,4 @@
-# Curl, CurlResponse
+# curl
 
 A basic CURL wrapper for PHP (see [http://php.net/curl](http://php.net/curl) for more information about the libcurl extension for PHP)
 
@@ -17,6 +17,7 @@ Simply require and initialize the `Curl` class like so:
 	require_once 'curl.php';
 	$curl = new Curl;
 
+
 ### Performing a Request
 
 The Curl object supports 5 types of requests: HEAD, GET, POST, PUT, and DELETE. You must specify a url to request and optionally specify an associative array or string of variables to send along with it.
@@ -31,7 +32,7 @@ To use a custom request methods, you can call the `request` method:
 
 	$response = $curl->request('YOUR_CUSTOM_REQUEST_TYPE', $url, $vars = array());
 
-All of the built in request methods like `put`, `get`, etc simply wrap the `request` method. For example, the `post` is implemented like:
+All of the built in request methods like `put` and `get` simply wrap the `request` method. For example, the `post` method is implemented like:
 
 	function post($url, $vars = array()) {
 	    return $this->request('POST', $url, $vars);
@@ -46,7 +47,7 @@ Examples:
 	
 	$response = $curl->post('test.com/posts', array('title' => 'Test', 'body' => 'This is a test'));
 
-All requests return a CurlResponse object or false if an error occurred (see below)
+All requests return a CurlResponse object (see below) or false if an error occurred. You can access the error string with the `$curl->error()` method.
 
 
 ### The CurlResponse Object
