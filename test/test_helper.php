@@ -22,6 +22,14 @@ function assert_no_difference($expression, $lambda) {
     assert_equal($value, eval($expression));
 }
 
+function assert_empty($value) {
+    ensure(empty($value));
+}
+
+function assert_not_empty($value) {
+    ensure(!empty($value));
+}
+
 function assert_in_array($needle, $haystack) {
     ensure(in_array($needle, $haystack));
 }
