@@ -34,7 +34,7 @@ class CurlResponse {
      *
      * @param string $response
     **/
-    public function __construct($response) {
+    function __construct($response) {
         # Headers regex
         $pattern = '#HTTP/\d\.\d.*?$.*?\r\n\r\n#ims';
         
@@ -71,7 +71,7 @@ class CurlResponse {
      *
      * @return string
     **/
-    public function __toString() {
+    function __toString() {
         return $this->body;
     }
     

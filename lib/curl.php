@@ -74,7 +74,7 @@ class Curl {
      * Sets the $cookie_file to "curl_cookie.txt" in the current directory
      * Also sets the $user_agent to $_SERVER['HTTP_USER_AGENT'] if it exists, 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)' otherwise
     **/
-    public function __construct() {
+    function __construct() {
         $this->cookie_file = dirname(__FILE__).DIRECTORY_SEPARATOR.'curl_cookie.txt';
         $this->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)';
     }
@@ -88,7 +88,7 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse object
     **/
-    public function delete($url, $vars = array()) {
+    function delete($url, $vars = array()) {
         return $this->request('DELETE', $url, $vars);
     }
     
@@ -97,7 +97,7 @@ class Curl {
      *
      * @return string
     **/
-    public function error() {
+    function error() {
         return $this->error;
     }
     
@@ -110,7 +110,7 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse
     **/
-    public function get($url, $vars = array()) {
+    function get($url, $vars = array()) {
         if (!empty($vars)) {
             $url .= (stripos($url, '?') !== false) ? '&' : '?';
             $url .= (is_string($vars)) ? $vars : http_build_query($vars, '', '&');
@@ -127,7 +127,7 @@ class Curl {
      * @param array|string $vars
      * @return CurlResponse
     **/
-    public function head($url, $vars = array()) {
+    function head($url, $vars = array()) {
         return $this->request('HEAD', $url, $vars);
     }
     
@@ -138,7 +138,7 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse|boolean
     **/
-    public function post($url, $vars = array()) {
+    function post($url, $vars = array()) {
         return $this->request('POST', $url, $vars);
     }
     
@@ -151,7 +151,7 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse|boolean
     **/
-    public function put($url, $vars = array()) {
+    function put($url, $vars = array()) {
         return $this->request('PUT', $url, $vars);
     }
     
