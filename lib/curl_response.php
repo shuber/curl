@@ -41,7 +41,7 @@ class CurlResponse {
         # Extract headers from response
         preg_match_all($pattern, $response, $matches);
         $headers_string = array_pop($matches[0]);
-        $headers = split("\r\n", str_replace("\r\n\r\n", '', $headers_string));
+        $headers = explode("\r\n", str_replace("\r\n\r\n", '', $headers_string));
         
         # Remove headers from the response body
         $this->body = str_replace($headers_string, '', $response);
