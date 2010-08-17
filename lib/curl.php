@@ -338,8 +338,15 @@ class Curl {
     }
     $this->error = '';
     $this->request = curl_init();
-    if (is_array($post_vars)) {
+
+    if (is_array($post_vars))
+    {
       $post_vars = http_build_query($post_vars, '', '&');
+    }
+
+    if (is_array($put_data))
+    {
+      $put_data = http_build_query($put_data, '', '&');
     }
 
     $this->setRequestOptions($url, $method, $post_vars, $put_data);
