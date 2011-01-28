@@ -138,8 +138,8 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse|boolean
     **/
-    function post($url, $vars = array()) {
-        return $this->request('POST', $url, $vars);
+    function post($url, $vars = array(), $enctype = NULL) {
+        return $this->request('POST', $url, $vars, $enctype);
     }
     
     /**
@@ -165,10 +165,10 @@ class Curl {
      * @param array|string $vars
      * @return CurlResponse|boolean
     **/
-    function request($method, $url, $vars = array()) {
+    function request($method, $url, $vars = array(), $enctype = NULL) {
         $this->error = '';
         $this->request = curl_init();
-        if (is_array($vars)) $vars = http_build_query($vars, '', '&');
+        if (is_array($vars) && $encytype != 'multipart/form-data') $vars = http_build_query($vars, '', '&');
         
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
