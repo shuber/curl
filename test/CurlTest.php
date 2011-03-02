@@ -5,23 +5,34 @@ require_once dirname(__FILE__).'/../lib/curl_response.php';
 class CurlTest extends PHPUnit_Framework_TestCase
 {
 
-  function setup()
-  {
-    $this->curl = new Curl;
-    $this->response = $this->curl->get('www.google.com');
-  }
-
   function testGet()
   {
-    $this->assertRegExp('#google#', (string) $this->response);
-    $this->assertEquals(200, $this->response->headers['Status-Code']);
+    $curl = new Curl();
+    $response = $curl->get('www.google.com');
+    $this->assertRegExp('#google#', (string) $response);
+    $this->assertEquals(200, $response->headers['Status-Code']);
   }
 
   function testError()
   {
-    $this->curl->get('diaewkaksdljf-invalid-url-dot-com.com');
-    $err = $this->curl->error();
+    $curl = new Curl();
+    $curl->get('diaewkaksdljf-invalid-url-dot-com.com');
+    $err = $curl->error();
     $this->assertTrue(!empty($err));
   }
 
+  function testSsl()
+  {
+    $curl = new Curl();
+    $response = $curl->get('https://www.facebook.com/');
+    $this->assertEquals(200, $response->headers['Status-Code']);
+  }
+
+  function testValidatedSsl()
+  {
+    $curl = new Curl();
+    $curl->setValidateSsl(true);
+    $response = $curl->get('https://www.facebook.com/');
+    $this->assertEquals(200, $response->headers['Status-Code']);
+  }
 }
