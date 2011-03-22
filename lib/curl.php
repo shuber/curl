@@ -177,7 +177,7 @@ class Curl
   }
 
   /**
-   * Set an associative array of CURLOPT options
+   * Set a CURLOPT option
   **/
   public function setOption($name, $value)
   {
@@ -185,7 +185,7 @@ class Curl
     {
       $name = constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($name)));
     }
-    $this->options[$name] = $options;
+    $this->options[$name] = $value;
   }
 
   /**
