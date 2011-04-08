@@ -436,7 +436,7 @@ class Curl
   {
     $purl = parse_url($url);
 
-    if ($purl['scheme'] == 'https')
+    if (!empty($purl['scheme']) && $purl['scheme'] == 'https')
     {
       curl_setopt($this->request, CURLOPT_PORT , empty($purl['port'])?443:$purl['port']);
       if ($this->validate_ssl)
