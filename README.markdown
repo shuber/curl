@@ -14,7 +14,7 @@ Click the `download` link above or `git clone git://github.com/shuber/curl.git`
 
 Simply require and initialize the `Curl` class like so:
 
-	require_once 'curl.php';
+	require_once 'autoload.php';
 	$curl = new Curl;
 
 

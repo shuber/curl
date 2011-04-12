@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../curl.php';
+require_once dirname(__FILE__).'/../autoload.php';
 
 class CurlResponseTest extends PHPUnit_Framework_TestCase
 {
