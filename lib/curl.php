@@ -53,14 +53,6 @@ class Curl {
     public $user_agent;
     
     /**
-     * Stores an error string for the last request if one occurred
-     *
-     * @var string
-     * @access protected
-    **/
-    protected $error = '';
-    
-    /**
      * Stores resource handle for the current CURL request
      *
      * @var resource
@@ -90,15 +82,6 @@ class Curl {
     **/
     function delete($url, $vars = array()) {
         return $this->request('DELETE', $url, $vars);
-    }
-    
-    /**
-     * Returns the error string of the current request if one occurred
-     *
-     * @return string
-    **/
-    function error() {
-        return $this->error;
     }
     
     /**
@@ -166,7 +149,6 @@ class Curl {
      * @return CurlResponse|boolean
     **/
     function request($method, $url, $vars = array()) {
-        $this->error = '';
         $this->request = curl_init();
         if (is_array($vars)) $vars = http_build_query($vars, '', '&');
         
@@ -175,12 +157,9 @@ class Curl {
         $this->set_request_headers();
         
         $response = curl_exec($this->request);
+        if (!$response) throw new CurlException(curl_errno($this->request));
         
-        if ($response) {
-            $response = new CurlResponse($response);
-        } else {
-            $this->error = curl_errno($this->request).' - '.curl_error($this->request);
-        }
+        $response = new CurlResponse($response);
         
         curl_close($this->request);
         
