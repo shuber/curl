@@ -157,7 +157,7 @@ class Curl {
         $this->set_request_headers();
         
         $response = curl_exec($this->request);
-        if (!$response) throw new CurlException(curl_errno($this->request));
+        if (!$response) throw new CurlException(curl_error($this->request), curl_errno($this->request));
         
         $response = new CurlResponse($response);
         
