@@ -59,6 +59,14 @@ class Curl {
      * @access protected
     **/
     protected $request;
+    
+    /**
+     * Stores the HTTP auth credentials
+     *
+     * @var $userpwd
+     * @access protected
+    **/
+    protected $userpwd;
         
     /**
      * Initializes a Curl object
@@ -169,6 +177,24 @@ class Curl {
     }
     
     /**
+     * Sets the user and password for HTTP auth basic authentication method.
+     *
+     * @param string|null $username
+     * @param string|null $password
+     * @return Curl
+     */
+    function setAuth($username, $password=null)
+    {
+      if (null === $username) {
+        $this->userpwd = null;
+        return $this;
+      }
+      
+      $this->userpwd = $username.':'.$password;
+      return $this;
+    }
+    
+    /**
      * Formats and adds custom headers to the current request
      *
      * @return void
@@ -227,6 +253,12 @@ class Curl {
         }
         if ($this->follow_redirects) curl_setopt($this->request, CURLOPT_FOLLOWLOCATION, true);
         if ($this->referer) curl_setopt($this->request, CURLOPT_REFERER, $this->referer);
+        if ($this->userpwd) {
+          curl_setopt($this->request, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+          curl_setopt($this->request, CURLOPT_USERPWD, $this->userpwd); 
+        } else {
+          curl_setopt($this->request, CURLOPT_HTTPAUTH, false);
+        }
         
         # Set any custom CURL options
         foreach ($this->options as $option => $value) {
