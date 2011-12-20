@@ -59,7 +59,7 @@ class Curl {
      * @access protected
     **/
     protected $request;
-    
+        
     /**
      * Initializes a Curl object
      *
@@ -148,17 +148,18 @@ class Curl {
      * @param array|string $vars
      * @return CurlResponse|boolean
     **/
-    function request($method, $url, $vars = array(), $enctype = NULL) {
-        $this->error = '';
+    function request($method, $url, $vars = array(), $enctype = null) {
         $this->request = curl_init();
-        if (is_array($vars) && $encytype != 'multipart/form-data') $vars = http_build_query($vars, '', '&');
+        if (is_array($vars) && $enctype != 'multipart/form-data') $vars = http_build_query($vars, '', '&');
         
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
         $this->set_request_headers();
         
         $response = curl_exec($this->request);
-        if (!$response) throw new CurlException(curl_error($this->request), curl_errno($this->request));
+        if (!$response) {
+          throw new CurlException(curl_error($this->request), curl_errno($this->request));
+        }
         
         $response = new CurlResponse($response);
         
