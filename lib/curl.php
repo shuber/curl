@@ -252,5 +252,15 @@ class Curl {
             curl_setopt($this->request, constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($option))), $value);
         }
     }
+    
+    /**
+     * Returns an associative array of curl options
+     * currently configured.
+     *
+     * @return array Associative array of curl options
+     */
+    function get_request_options() {
+        return curl_getinfo( $this->request );
+    }
 
 }
