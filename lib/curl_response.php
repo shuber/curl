@@ -43,7 +43,12 @@ class CurlResponse {
         $headers_string = array_pop($matches[0]);
         $headers = explode("\r\n", str_replace("\r\n\r\n", '', $headers_string));
         
-        # Remove headers from the response body
+        # Inlude all received headers in the $headers_string
+        while (count($matches[0])) {
+          $headers_string = array_pop($matches[0]).$headers_string;
+        }
+
+        # Remove all headers from the response body
         $this->body = str_replace($headers_string, '', $response);
         
         # Extract the version and status from the first header

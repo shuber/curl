@@ -1,0 +1,7 @@
+{
+    "name": "shuber/curl",
+    "license": "MIT",
+    "keywords": ["curl","spider", "bot", "scraper"],
+    "type": "library",
+    "description": "PHP Wrapper for Curl"
+}

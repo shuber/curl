@@ -13,8 +13,10 @@ class CurlTest extends ztest\UnitTestCase {
     }
     
     function test_error() {
-        $this->curl->get('diaewkaksdljf-invalid-url-dot-com.com');
-        assert_not_empty($this->curl->error());
+        assert_throws('CurlException', function() {
+          $curl = new Curl();
+          $curl->get('diaewkaksdljf-invalid-url-dot-com.com');
+        });
     }
     
 }
