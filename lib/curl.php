@@ -76,7 +76,15 @@ class Curl
    * @var $userpwd
    * @access protected
   **/
-  protected $userpwd;
+  protected $userpwd = false;
+
+  /**
+   * Sets curl_setopt($curl, CURLOPT_VERBOSE, 1);
+   *
+   * @var boolean
+   * @access public
+  **/
+  public $debug = false;
 
   /**
    * Initializes a Curl object
@@ -435,6 +443,11 @@ class Curl
   protected function setRequestOptions($url, $method, $vars, $put_data)
   {
     $purl = parse_url($url);
+
+    if($this->debug)
+    {
+      curl_setopt($this->request, CURLOPT_VERBOSE, 1);
+    }
 
     if (!empty($purl['scheme']) && $purl['scheme'] == 'https')
     {
