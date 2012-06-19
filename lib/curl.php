@@ -53,14 +53,6 @@ class Curl {
     public $user_agent;
     
     /**
-     * Stores an error string for the last request if one occurred
-     *
-     * @var string
-     * @access protected
-    **/
-    protected $error = '';
-    
-    /**
      * Stores resource handle for the current CURL request
      *
      * @var resource
@@ -68,6 +60,14 @@ class Curl {
     **/
     protected $request;
     
+    /**
+     * Stores the HTTP auth credentials
+     *
+     * @var $userpwd
+     * @access protected
+    **/
+    protected $userpwd;
+        
     /**
      * Initializes a Curl object
      *
@@ -90,15 +90,6 @@ class Curl {
     **/
     function delete($url, $vars = array()) {
         return $this->request('DELETE', $url, $vars);
-    }
-    
-    /**
-     * Returns the error string of the current request if one occurred
-     *
-     * @return string
-    **/
-    function error() {
-        return $this->error;
     }
     
     /**
@@ -138,8 +129,8 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse|boolean
     **/
-    function post($url, $vars = array()) {
-        return $this->request('POST', $url, $vars);
+    function post($url, $vars = array(), $enctype = NULL) {
+        return $this->request('POST', $url, $vars, $enctype);
     }
     
     /**
@@ -165,26 +156,42 @@ class Curl {
      * @param array|string $vars
      * @return CurlResponse|boolean
     **/
-    function request($method, $url, $vars = array()) {
-        $this->error = '';
+    function request($method, $url, $vars = array(), $enctype = null) {
         $this->request = curl_init();
-        if (is_array($vars)) $vars = http_build_query($vars, '', '&');
+        if (is_array($vars) && $enctype != 'multipart/form-data') $vars = http_build_query($vars, '', '&');
         
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
         $this->set_request_headers();
         
         $response = curl_exec($this->request);
-        
-        if ($response) {
-            $response = new CurlResponse($response);
-        } else {
-            $this->error = curl_errno($this->request).' - '.curl_error($this->request);
+        if (!$response) {
+          throw new CurlException(curl_error($this->request), curl_errno($this->request));
         }
+        
+        $response = new CurlResponse($response);
         
         curl_close($this->request);
         
         return $response;
+    }
+    
+    /**
+     * Sets the user and password for HTTP auth basic authentication method.
+     *
+     * @param string|null $username
+     * @param string|null $password
+     * @return Curl
+     */
+    function setAuth($username, $password=null)
+    {
+      if (null === $username) {
+        $this->userpwd = null;
+        return $this;
+      }
+      
+      $this->userpwd = $username.':'.$password;
+      return $this;
     }
     
     /**
@@ -246,11 +253,27 @@ class Curl {
         }
         if ($this->follow_redirects) curl_setopt($this->request, CURLOPT_FOLLOWLOCATION, true);
         if ($this->referer) curl_setopt($this->request, CURLOPT_REFERER, $this->referer);
+        if ($this->userpwd) {
+          curl_setopt($this->request, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+          curl_setopt($this->request, CURLOPT_USERPWD, $this->userpwd); 
+        } else {
+          curl_setopt($this->request, CURLOPT_HTTPAUTH, false);
+        }
         
         # Set any custom CURL options
         foreach ($this->options as $option => $value) {
             curl_setopt($this->request, constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($option))), $value);
         }
+    }
+    
+    /**
+     * Returns an associative array of curl options
+     * currently configured.
+     *
+     * @return array Associative array of curl options
+     */
+    function get_request_options() {
+        return curl_getinfo( $this->request );
     }
 
 }
