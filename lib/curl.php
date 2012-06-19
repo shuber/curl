@@ -67,6 +67,13 @@ class Curl {
      * @access protected
     **/
     protected $request;
+
+    /**
+     * Sets curl_setopt($curl, CURLOPT_VERBOSE, 1);
+     * @var boolean
+     * @access public
+    **/
+    public $debug = false;
     
     /**
      * Initializes a Curl object
@@ -169,10 +176,12 @@ class Curl {
         $this->error = '';
         $this->request = curl_init();
         if (is_array($vars)) $vars = http_build_query($vars, '', '&');
-        
+
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
         $this->set_request_headers();
+
+        if($this->debug) curl_setopt($this->request, CURLOPT_VERBOSE, 1);
         
         $response = curl_exec($this->request);
         
