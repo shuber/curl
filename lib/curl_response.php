@@ -6,6 +6,7 @@
  *
  * @package curl
  * @author Sean Huber <shuber@huberry.com>
+ * @author Nick Lombard <curling@jigsoft.co.za>
 **/
 class CurlResponse
 {
@@ -18,11 +19,25 @@ class CurlResponse
   public $body = '';
 
   /**
-   * An associative array containing the response's headers
+   * The debug log view if any.
+   *
+   * @var string
+  **/
+  public $debug_log = '';
+
+  /**
+   * An associative array containing the response's headers.
    *
    * @var array
   **/
   public $headers = array();
+
+  /**
+   * An array containing the raw request and response headers.
+   *
+   * @var array
+  **/
+  public $all_headers = array();
 
   /**
    * Accepts the result of a curl request as a string
@@ -35,33 +50,50 @@ class CurlResponse
    *
    * @param string $response
   **/
-  function __construct($response)
+  function __construct($response, $outstr = null)
   {
-    do
+    if (isset($outstr))
     {
-      list($header, $response) = explode("\r\n\r\n", $response, 2);
-      # handle 1xx responses and 3xx redirects
-      list($statusLine) = explode("\r\n", $header, 2);
+      if (Curl::$debug)
+      {
+        $this->debug_log = \preg_replace('/^([^\*|>|<])/m', '> $1', $outstr);
+      }
+      if (Curl::$with_headers)
+      {
+        $outstr = preg_replace('/\*.*$/m', '', $outstr);
+
+        preg_match_all('/>[^<]*|<[^>]*/', $outstr, $matches);
+        $matches = array_map(function ($a)
+        {
+          return preg_replace('/<\s*|>\s*/m', '', $a);
+        }, $matches[0]);
+        $ttt = $matches;
+        if (($last = end($matches)) !== false)
+        {
+          $this->all_headers = $matches;
+          # Extract headers from response
+          preg_match_all('/\w.*$/m', end($this->all_headers), $matches);
+          reset($this->all_headers);
+          $headers = array_pop($matches);
+          # Extract the version and status from the first header
+          $status = trim(array_shift($headers));
+          $this->headers['Status-Line'] = $status;
+          $status = preg_split('/\s/', $status, 3);
+          $this->headers['Http-Version'] = $status[0];
+          $this->headers['Status-Code'] = $status[1];
+          $this->headers['Reason-Phrase'] = $status[2];
+
+          # Convert headers into an associative array
+          foreach ($headers as $header)
+          {
+            preg_match('/(.*?)\:\s(.*)\r/', $header, $matches);
+            $this->headers[$matches[1]] = $matches[2];
+          }
+        }
+      }
     }
-    while (!empty($response) && preg_match('/\h((1|3)\d{2})\h/',$statusLine));
 
     $this->body = $response;
-
-    $headers = explode("\r\n", $header);
-
-    # Extract the version and status from the first header
-    $version_and_status = array_shift($headers);
-    preg_match('#HTTP/(\d\.\d)\s(\d\d\d)\s(.*)#', $version_and_status, $matches);
-    $this->headers['Http-Version'] = $matches[1];
-    $this->headers['Status-Code'] = $matches[2];
-    $this->headers['Status'] = $matches[2].' '.$matches[3];
-
-    # Convert headers into an associative array
-    foreach ($headers as $header)
-    {
-        preg_match('#(.*?)\:\s(.*)#', $header, $matches);
-        $this->headers[$matches[1]] = $matches[2];
-    }
   }
 
   /**
@@ -80,6 +112,9 @@ class CurlResponse
     return $this->body;
   }
 
+  /**
+   * Determine if the response is html.
+  **/
   public function isHtml()
   {
     $type = isset($this->headers['Content-Type'])?$this->headers['Content-Type']:'';
@@ -93,6 +128,9 @@ class CurlResponse
     }
   }
 
+  /**
+   * Retrieve the content type of the response.
+  **/
   public function getMimeType()
   {
     $type = isset($this->headers['Content-Type'])?$this->headers['Content-Type']:false;
