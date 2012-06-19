@@ -8,6 +8,7 @@
  * @package curl
  * @author Sean Huber <shuber@huberry.com>
  * @author Fabian Grassl
+ * @author Nick Lombard <curling@jigsoft.co.za>
 **/
 class Curl
 {
@@ -64,7 +65,7 @@ class Curl
 
   /**
    * Stores resource handle for the current CURL request
-   * Stores resource handle for the current CURL request
+   * 
    * @var resource
    * @access protected
   **/
@@ -84,17 +85,31 @@ class Curl
    * @var boolean
    * @access public
   **/
-  public $debug = false;
+  public static $debug = false;
+
+  /**
+   * Whether to parse header information or not.
+   *
+   * @var boolean
+   * @access public
+  **/
+  public static $with_headers = false;
+
 
   /**
    * Initializes a Curl object
    *
-   * Sets the $cookie_file to "curl_cookie.txt" in the current directory
    * Also sets the $user_agent to $_SERVER['HTTP_USER_AGENT'] if it exists, 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)' otherwise
+   *
+   * @param debug - turn debug on - will collect a debug log in the response.
+   * @param with_headers - switch whether to collect headers or not.
   **/
-  public function __construct()
+  public function __construct($debug = false, $with_headers = false)
   {
     $this->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)';
+    self::$debug = $debug;
+    self::$with_headers = $with_headers;
+
   }
 
   /**
@@ -265,16 +280,6 @@ class Curl
   }
 
   /**
-   * Returns the error string of the current request if one occurred
-   *
-   * @return string
-  **/
-  public function error()
-  {
-    return $this->error;
-  }
-
-  /**
    * Makes an HTTP GET request to the specified $url with an optional array or string of $vars
    *
    * Returns a CurlResponse object if the request was successful, false otherwise
@@ -365,7 +370,6 @@ class Curl
     {
       $put_data = CurlPutData::fromString($put_data);
     }
-    $this->error = '';
     $this->request = curl_init();
 
     if (is_array($post_vars))
@@ -378,6 +382,13 @@ class Curl
       $put_data = http_build_query($put_data, '', '&');
     }
 
+    if (self::$debug||self::$with_headers)
+    {
+      $out = fopen("php://temp", 'rw');
+      $this->setOption('CURLOPT_STDERR', $out);
+      $this->setOption('CURLOPT_VERBOSE', true);
+    }
+
     $this->setRequestOptions($url, $method, $post_vars, $put_data);
     $this->setRequestHeaders();
 
@@ -388,7 +399,18 @@ class Curl
       throw new CurlException(curl_error($this->request), curl_errno($this->request));
     }
 
-    $response = new CurlResponse($response);
+    if (isset($out))
+    {
+      rewind($out);
+      $outstr = stream_get_contents($out);
+      fclose($out);
+      $response = new CurlResponse($response, $outstr);
+      unset($outstr);
+    }
+    else
+    {
+      $response = new CurlResponse($response);
+    }
 
     curl_close($this->request);
 
@@ -431,6 +453,35 @@ class Curl
   }
 
   /**
+    * Set the associated CURL options for a request method
+    *
+    * @param string $method
+    * @return void
+    * @access protected
+  **/
+  protected function setRequestMethod($method)
+  {
+    switch ($method)
+    {
+      case 'HEAD':
+      case 'OPTIONS':
+        curl_setopt($this->request, CURLOPT_NOBODY, true);
+        break;
+      case 'GET':
+        curl_setopt($this->request, CURLOPT_HTTPGET, true);
+        break;
+      case 'POST':
+        curl_setopt($this->request, CURLOPT_POST, true);
+        break;
+      case 'PUT':
+        curl_setopt($this->request, CURLOPT_PUT, true);
+        break;
+      default:
+        curl_setopt($this->request, CURLOPT_CUSTOMREQUEST, $method);
+    }
+  }
+
+  /**
    * Sets the CURLOPT options for the current request
    *
    * @param string $url
@@ -443,11 +494,6 @@ class Curl
   protected function setRequestOptions($url, $method, $vars, $put_data)
   {
     $purl = parse_url($url);
-
-    if($this->debug)
-    {
-      curl_setopt($this->request, CURLOPT_VERBOSE, 1);
-    }
 
     if (!empty($purl['scheme']) && $purl['scheme'] == 'https')
     {
@@ -465,23 +511,7 @@ class Curl
     }
 
     $method = strtoupper($method);
-    switch ($method)
-    {
-      case 'HEAD':
-        curl_setopt($this->request, CURLOPT_NOBODY, true);
-        break;
-      case 'GET':
-        curl_setopt($this->request, CURLOPT_HTTPGET, true);
-        break;
-      case 'POST':
-        curl_setopt($this->request, CURLOPT_POST, true);
-        break;
-      case 'PUT':
-        curl_setopt($this->request, CURLOPT_PUT, true);
-        break;
-      default:
-        curl_setopt($this->request, CURLOPT_CUSTOMREQUEST, $method);
-    }
+    $this->setRequestMethod($method);
 
     curl_setopt($this->request, CURLOPT_URL, $url);
 
@@ -514,7 +544,7 @@ class Curl
     }
 
     # Set some default CURL options
-    curl_setopt($this->request, CURLOPT_HEADER, true);
+    curl_setopt($this->request, CURLOPT_HEADER, false);
     curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($this->request, CURLOPT_USERAGENT, $this->user_agent);
     curl_setopt($this->request, CURLOPT_TIMEOUT, 30);
@@ -558,7 +588,7 @@ class Curl
    *
    * @return array Associative array of curl options
   **/
-  function get_request_options() {
+  function getRequestOptions() {
     return curl_getinfo($this->request);
   }
 
