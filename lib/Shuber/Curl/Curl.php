@@ -109,8 +109,8 @@ class Curl {
    * to whatever you'd prefer, even empty string is sufficient.
   **/
   private function composeUserAgent() {
-    if (!isset($this->user_agent)) {
-      $user_agent = 'User-Agent: Shuber/Curl/1.0 (cURL/';
+    if (empty($this->headers['User-Agent'])) {
+      $user_agent = 'Shuber/Curl/1.0 (cURL/';
       $curl = \curl_version();
 
       if (isset($curl['version']))
@@ -369,7 +369,11 @@ class Curl {
     $headers = array();
     foreach ($this->headers as $key => $value)
     {
-      $headers[] = $key.': '.$value;
+
+      if (isset($value)
+            && !in_array($key, array('User-Agent', 'Referer')))
+                $headers[] = $key.': '.$value;
+
     }
     curl_setopt($this->request, CURLOPT_HTTPHEADER, $headers);
   }
@@ -468,7 +472,7 @@ class Curl {
     # Set some default CURL options
     curl_setopt($this->request, CURLOPT_HEADER, false);
     curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($this->request, CURLOPT_USERAGENT, $this->user_agent);
+    curl_setopt($this->request, CURLOPT_USERAGENT, 'User-Agent: '. $this->header['User-Agent']);
     curl_setopt($this->request, CURLOPT_TIMEOUT, 30);
 
     if ($this->cookie_file)
@@ -482,9 +486,9 @@ class Curl {
       curl_setopt($this->request, CURLOPT_FOLLOWLOCATION, true);
     }
 
-    if ($this->referer)
+    if ($this->headers['Referer'])
     {
-      curl_setopt($this->request, CURLOPT_REFERER, $this->referer);
+      curl_setopt($this->request, CURLOPT_REFERER, 'Referer: '.$this->headers['Referer']);
     }
 
     if ($this->userpwd)

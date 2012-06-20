@@ -125,7 +125,7 @@ class CurlResponse
   **/
   public function isHtml()
   {
-    $type = isset($this->headers['Content-Type'])?$this->headers['Content-Type']:'';
+    $type = $this->headers['Content-Type'] ?: '';
     if (preg_match('/(x|ht)ml/i', $type))
     {
       return true;
@@ -139,11 +139,9 @@ class CurlResponse
   /**
    * Retrieve the content type of the response.
   **/
-  public function getMimeType()
-  {
-    $type = isset($this->headers['Content-Type'])?$this->headers['Content-Type']:false;
-    if ($type)
-    {
+  public function getMimeType() {
+    $type = $this->headers['Content-Type'] ?: false;
+    if ($type) {
       list($type) = explode(";", $type);
       $type = trim($type);
     }
