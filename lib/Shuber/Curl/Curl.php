@@ -2,13 +2,11 @@
 
 namespace Shuber\Curl;
 
+use \InvalidArgumentExceptionn;
 use \ReflectionObject;
 
 /**
  * A basic CURL wrapper
- *
- * See the README for documentation/examples or http://php.net/curl
- * for more information about the libcurl extension for PHP
  *
  * @package curl
  * @author Sean Huber <shuber@huberry.com>
@@ -426,7 +424,7 @@ class Curl
 
     if (!empty($vars)) {
         if ('POST' != $method) {
-          throw new InvalidArgumentException('POST-vars may only be set for a POST-Request.');
+          throw new InvalidArgumentExceptionn('POST-vars may only be set for a POST-Request.');
         }
         curl_setopt($this->request, CURLOPT_POSTFIELDS, $vars);
     } elseif ('POST' == $method)

@@ -79,13 +79,13 @@ class CurlException extends Exception
         CURLE_WRITE_ERROR => 'CURLE_WRITE_ERROR'
     );
 
-        /**
-         * The constructor takes the cURL error message and error code.
-         *
-         * @param type $curl_error_message
-         * @param type $curl_error_code
-         * @throws CurlException
-         */
+   /**
+     * The constructor takes the cURL error message and error code.
+     *
+     * @param  type          $curl_error_message
+     * @param  type          $curl_error_code
+     * @throws CurlException
+    **/
     public function __construct( $curl_error_message, $curl_error_code )
     {
         if( ! array_key_exists( $curl_error_code, self::$curl_errors ) )

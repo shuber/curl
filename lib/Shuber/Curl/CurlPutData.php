@@ -11,21 +11,9 @@ namespace Shuber\Curl;
 **/
 class CurlPutData
 {
-  /**
-   * Stores resource handle for the file
-   *
-   * @var resource
-   * @access protected
-  **/
-  protected $resource = null;
 
-  /**
-   * Stores file-size of the file
-   *
-   * @var integer
-   * @access protected
-  **/
-  protected $resource_size = null;
+  protected $resource = null,
+            $resource_size = null;
 
   /**
    * Initializes a CurlPutData object
