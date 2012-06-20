@@ -1,8 +1,16 @@
 <?php
 
+namespace Shuber\Curl;
+
+/**
+ * Curl error messoges wrapped as a CurlException.
+ *
+ * @package Shuber/Curl
+ * @author Nick Lombard <curling@jigsoft.co.za>
+**/
 class CurlException extends Exception
 {
-	
+
 	static public $curl_errors = array(
 		CURLE_ABORTED_BY_CALLBACK => 'CURLE_ABORTED_BY_CALLBACK',
 		CURLE_BAD_CALLING_ORDER => 'CURLE_BAD_CALLING_ORDER',
@@ -70,13 +78,20 @@ class CurlException extends Exception
 		CURLE_URL_MALFORMAT_USER => 'CURLE_URL_MALFORMAT_USER',
 		CURLE_WRITE_ERROR => 'CURLE_WRITE_ERROR'
 	);
-	
+
+        /**
+         * The constructor takes the cURL error message and error code.
+         *
+         * @param type $curl_error_message
+         * @param type $curl_error_code
+         * @throws CurlException
+         */
 	function __construct( $curl_error_message, $curl_error_code )
 	{
 		if( ! array_key_exists( $curl_error_code, self::$curl_errors ) )
 			throw new Exception( "Unknown \$curl_error_code: $curl_error_code" );
-		
+
 		parent::__construct( self::$curl_errors[$curl_error_code].": $curl_error_message", $curl_error_code );
 	}
-	
+
 }

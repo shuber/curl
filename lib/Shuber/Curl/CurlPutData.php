@@ -1,11 +1,13 @@
 <?php
+
+namespace Shuber\Curl;
+
 /**
  * A File handler class for curl PUT-data
  *
- * See the README for documentation/examples or http://php.net/curl for more information about the libcurl extension for PHP
- *
- * @package curl
+ * @package Shuber/Curl
  * @author Fabian Grassl
+ * @author Nick Lombard <curling@jigsoft.co.za>
 **/
 class CurlPutData {
 

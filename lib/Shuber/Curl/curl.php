@@ -1,9 +1,12 @@
 <?php
 
+namespace Shuber\Curl;
+
 /**
  * A basic CURL wrapper
  *
- * See the README for documentation/examples or http://php.net/curl for more information about the libcurl extension for PHP
+ * See the README for documentation/examples or http://php.net/curl
+ * for more information about the libcurl extension for PHP
  *
  * @package curl
  * @author Sean Huber <shuber@huberry.com>
@@ -65,7 +68,7 @@ class Curl
 
   /**
    * Stores resource handle for the current CURL request
-   * 
+   *
    * @var resource
    * @access protected
   **/
@@ -99,19 +102,69 @@ class Curl
   /**
    * Initializes a Curl object
    *
-   * Also sets the $user_agent to $_SERVER['HTTP_USER_AGENT'] if it exists, 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)' otherwise
+   * Also sets the $user_agent to $_SERVER['HTTP_USER_AGENT'] if it exists,
+   * 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)' otherwise
    *
    * @param debug - turn debug on - will collect a debug log in the response.
    * @param with_headers - switch whether to collect headers or not.
   **/
   public function __construct($debug = false, $with_headers = false)
   {
-    $this->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)';
     self::$debug = $debug;
     self::$with_headers = $with_headers;
-
+    $this->composeUserAgent();
   }
 
+
+  /**
+   * Com.osing the User-Agent request header with software version info.
+   *
+   * We attempt to collect as much informaito as is pertinent but not
+   * collecting anfthing usseless. First and foremost we send the Shuber/Curl
+   * version info and attempt to locate the libcurl anh PHP versions. If the
+   * SERVER_SOFTWARE variable is populated we are likely on CGI if that is
+   * empty we will attempt to retrieve CLI Terminal information.
+   *
+   * HTTP_USER_AGENT is added if available which will give the server ample
+   * information to try and resove any issues that might be rolated to the
+   * software supporting this library.
+   *
+   * To overwrite this behaviour simply set the User-Agent environment variable
+   * to whatever you'd prefer, even empty string is sufficient.
+  **/
+  private function composeUserAgent() {
+    if (!isset($this->user_agent)) {
+      $user_agent = 'User-Agent: Shuber/Curl/1.0 (cURL/';
+      $curl = \curl_version();
+
+      if (isset($curl['version']))
+           $user_agent .= $curl['version'];
+
+      else
+           $user_agent .= '?.?.?';
+
+      $user_agent .= ' PHP/'.PHP_VERSION.' ('.PHP_OS.')';
+
+          if (isset($_SERVER['SERVER_SOFTWARE']))
+                  $user_agent .= ' '.\preg_replace('~PHP/[\d\.]+~U',
+                          '', $_SERVER['SERVER_SOFTWARE']);
+      else {
+
+        if (isset($_SERVER['TERM_PROGRAM']))
+                  $user_agent .= " {$_SERVER['TERM_PROGRAM']}";
+
+          if (isset($_SERVER['TERM_PROGRAM_VERSION']))
+                  $user_agent .= "/{$_SERVER['TERM_PROGRAM_VERSION']}";
+      }
+
+      if (isset($_SERVER['HTTP_USER_AGENT']))
+            $user_agent .= " {$_SERVER['HTTP_USER_AGENT']}";
+
+      $user_agent .= ')';
+      $headers[] = $user_agent;
+    }
+
+  }
   /**
    * Weather to validate ssl certificates
    *
