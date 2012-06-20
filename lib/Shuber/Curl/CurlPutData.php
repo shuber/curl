@@ -1,5 +1,4 @@
 <?php
-
 namespace Shuber\Curl;
 
 /**
@@ -8,11 +7,9 @@ namespace Shuber\Curl;
  * @package Shuber/Curl
  * @author Fabian Grassl
  * @author Nick Lombard <curling@jigsoft.co.za>
-**/
-class CurlPutData
-{
-
-  protected $resource = null,
+ * */
+class CurlPutData {
+  protected $resource      = null,
             $resource_size = null;
 
   /**
@@ -22,9 +19,8 @@ class CurlPutData
    * @param resource $resource_size resource-size in bytes
    * @see CurlPutData::fromFile()
    * @see CurlPutData::fromString()
-  **/
-  public function __construct($resource, $resource_size)
-  {
+   * */
+  public function __construct($resource, $resource_size) {
     $this->resource = $resource;
     $this->resource_size = $resource_size;
   }
@@ -33,11 +29,10 @@ class CurlPutData
    * Create CurlPutData object from file
    *
    * @param string $filename filename & path
-  **/
-  public static function fromFile($filename)
-  {
+   * */
+  public static function fromFile($filename) {
     $resource_size = filesize($filename);
-    $resource = fopen($filename, 'r');
+    $resource      = fopen($filename, 'r');
 
     return new self($resource, $resource_size);
   }
@@ -46,36 +41,31 @@ class CurlPutData
    * Create CurlPutData object from string
    *
    * @param string $string content
-  **/
-  public static function fromString($string)
-  {
+   * */
+  public static function fromString($string) {
     $resource_size = strlen($string);
-    $resource = tmpfile();
+    $resource      = tmpfile();
     fwrite($resource, $string);
     fseek($resource, 0);
 
     return new self($resource, $resource_size);
   }
 
-   /**
+  /**
    * Get file-resource
-  **/
- public function getResource()
-  {
+   * */
+  public function getResource() {
     return $this->resource;
   }
 
-   /**
+  /**
    * Get file-resource size
-  **/
-  public function getResourceSize()
-  {
+   * */
+  public function getResourceSize() {
     return $this->resource_size;
   }
 
-  public function __destruct()
-  {
+  public function __destruct() {
     fclose($this->resource);
   }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Shuber\Curl;
 
 /**
@@ -9,42 +8,40 @@ namespace Shuber\Curl;
  * @package Shuber/Curl
  * @author Sean Huber <shuber@huberry.com>
  * @author Nick Lombard <curling@jigsoft.co.za>
-**/
-class CurlResponse
-{
-
-  public $body = '',
-         $debug_log = '',
-         $all_headers = array(),
-         $headers = array(
-                 'Status-Line' => null,
+ * */
+class CurlResponse {
+  public $body        = '',
+          $debug_log   = '',
+          $all_headers = array(),
+          $headers = array(
+                  'Status-Line'        => null,
                   // status line parsed
-                 'Http-Version' => null,
-                 'Status-Code' => null,
-                 'Status' => null,
+                  'Http-Version'       => null,
+                  'Status-Code'        => null,
+                  'Status'             => null,
                   // response header fields
-                 'Accept-Ranges' => null,
-                 'Age' => null,
-                 'ETag' => null,
-                 'Location' => null,
-                 'Proxy-Authenticate' => null,
-                 'Retry-After' => null,
-                 'Server' => null,
-                 'Vary' => null,
-                 'WWW-Authenticate' => null,
+                  'Accept-Ranges'      => null,
+                  'Age'                => null,
+                  'ETag'               => null,
+                  'Location'           => null,
+                  'Proxy-Authenticate' => null,
+                  'Retry-After'        => null,
+                  'Server'             => null,
+                  'Vary'               => null,
+                  'WWW-Authenticate'   => null,
                   // entity header fields
-                 'Allow' => null,
-                 'Content-Encoding' => null,
-                 'Content-Language' => null,
-                 'Content-Length' => null,
-                 'Content-Location' => null,
-                 'Content-MD5' => null,
-                 'Content-Range' => null,
-                 'Content-Type' => null,
-                 'Expires' => null,
-                 'Last-Modified' => null,
-                 'extension-header' => null,
-         );
+                  'Allow'              => null,
+                  'Content-Encoding'   => null,
+                  'Content-Language'   => null,
+                  'Content-Length'     => null,
+                  'Content-Location'   => null,
+                  'Content-MD5'        => null,
+                  'Content-Range'      => null,
+                  'Content-Type'       => null,
+                  'Expires'            => null,
+                  'Last-Modified'      => null,
+                  'extension-header'   => null,
+  );
 
   /**
    * Accepts the result of a curl request as a string
@@ -56,9 +53,8 @@ class CurlResponse
    * </code>
    *
    * @param string $response
-  **/
-  function __construct($response, $outstr = null)
-  {
+   * */
+  function __construct($response, $outstr = null) {
     if (isset($outstr)) {
       if (Curl::$debug) {
         $this->debug_log = \preg_replace('/^([^\*|>|<])/m', '> $1', $outstr);
@@ -68,9 +64,9 @@ class CurlResponse
 
         preg_match_all('/>[^<]*|<[^>]*/', $outstr, $matches);
         $matches = array_map(function ($a) {
-          return preg_replace('/<\s*|>\s*/m', '', $a);
-        }, $matches[0]);
-        $ttt = $matches;
+                  return preg_replace('/<\s*|>\s*/m', '', $a);
+                }, $matches[0]);
+        $ttt  = $matches;
         if (($last = end($matches)) !== false) {
           $this->all_headers = $matches;
           # Extract headers from response
@@ -78,9 +74,9 @@ class CurlResponse
           reset($this->all_headers);
           $headers = array_pop($matches);
           # Extract the version and status from the first header
-          $status = trim(array_shift($headers));
+          $status  = trim(array_shift($headers));
           $this->headers['Status-Line'] = $status;
-          $status = preg_split('/\s/', $status, 3);
+          $status  = preg_split('/\s/', $status, 3);
           $this->headers['Http-Version'] = $status[0];
           $this->headers['Status-Code'] = $status[1];
           $this->headers['Reason-Phrase'] = $status[2];
@@ -107,31 +103,29 @@ class CurlResponse
    * </code>
    *
    * @return string
-  **/
-  public function __toString()
-  {
+   * */
+  public function __toString() {
     return $this->body;
   }
 
   /**
    * Determine if the response is html.
-  **/
-  public function isHtml()
-  {
-    $type = $this->headers['Content-Type'] ?: '';
+   * */
+  public function isHtml() {
+    $type = $this->headers['Content-Type'] ? : '';
     if (preg_match('/(x|ht)ml/i', $type)) {
       return true;
-    } else {
+    }
+    else {
       return false;
     }
   }
 
   /**
    * Retrieve the content type of the response.
-  **/
-  public function getMimeType()
-  {
-    $type = $this->headers['Content-Type'] ?: false;
+   * */
+  public function getMimeType() {
+    $type = $this->headers['Content-Type'] ? : false;
     if ($type) {
       list($type) = explode(";", $type);
       $type = trim($type);

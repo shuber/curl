@@ -86,12 +86,12 @@ class CurlException extends Exception
      * @param  type          $curl_error_code
      * @throws CurlException
     **/
-    public function __construct( $curl_error_message, $curl_error_code )
+    public function __construct( $curl_error_message, $curl_error_code)
     {
-        if( ! array_key_exists( $curl_error_code, self::$curl_errors ) )
-            throw new Exception( "Unknown \$curl_error_code: $curl_error_code" );
+        if(!array_key_exists( $curl_error_code, self::$curl_errors))
+            throw new Exception( "Unknown \$curl_error_code: $curl_error_code");
 
-        parent::__construct( self::$curl_errors[$curl_error_code].": $curl_error_message", $curl_error_code );
+        parent::__construct(self::$curl_errors[$curl_error_code].": $curl_error_message", $curl_error_code);
     }
 
 }
