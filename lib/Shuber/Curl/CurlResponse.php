@@ -6,7 +6,7 @@ namespace Shuber\Curl;
  * Parses the response from a Curl request into an object containing
  * the response body and an associative array of headers
  *
- * @package curl
+ * @package Shuber/Curl
  * @author Sean Huber <shuber@huberry.com>
  * @author Nick Lombard <curling@jigsoft.co.za>
 **/

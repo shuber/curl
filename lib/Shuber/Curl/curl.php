@@ -2,6 +2,8 @@
 
 namespace Shuber\Curl;
 
+use \ReflectionObject;
+
 /**
  * A basic CURL wrapper
  *
@@ -13,107 +15,60 @@ namespace Shuber\Curl;
  * @author Fabian Grassl
  * @author Nick Lombard <curling@jigsoft.co.za>
 **/
-class Curl
-{
+class Curl {
+
+  protected $cookie_file = null,
+            $follow_redirects = true,
+            $headers = array(),
+            $options = array(),
+            $referer = null,
+            $user_agent = null,
+            $validate_ssl = false,
+            $request = null,
+            $userpwd = false;
+
+  private   $reflect = null;
+
+  public static $debug = false,
+                $with_headers = false;
+
 
   /**
-   * The file to read and write cookies to for requests
-   *
-   * @var string
-  **/
-  protected $cookie_file = null;
-
-  /**
-   * Determines whether or not requests should follow redirects
-   *
-   * @var boolean
-  **/
-  protected $follow_redirects = true;
-
-  /**
-   * An associative array of headers to send along with requests
-   *
-   * @var array
-  **/
-  protected $headers = array();
-
-  /**
-   * An associative array of CURLOPT options to send along with requests
-   *
-   * @var array
-  **/
-  protected $options = array();
-
-  /**
-   * The referer header to send along with requests
-   *
-   * @var string
-  **/
-  protected $referer = null;
-
-  /**
-   * The user agent to send along with requests
-   *
-   * @var string
-  **/
-  protected $user_agent = null;
-
-  /**
-   * Whether to validate SSL certificates
-   *
-   * @var boolean
-   * @access protected
-  **/
-  protected $validate_ssl = false;
-
-  /**
-   * Stores resource handle for the current CURL request
-   *
-   * @var resource
-   * @access protected
-  **/
-  protected $request = null;
-
-  /**
-   * Stores the HTTP auth credentials
-   *
-   * @var $userpwd
-   * @access protected
-  **/
-  protected $userpwd = false;
-
-  /**
-   * Sets curl_setopt($curl, CURLOPT_VERBOSE, 1);
-   *
-   * @var boolean
-   * @access public
-  **/
-  public static $debug = false;
-
-  /**
-   * Whether to parse header information or not.
-   *
-   * @var boolean
-   * @access public
-  **/
-  public static $with_headers = false;
-
+    * Magic methods for object member access,
+    */
+  public function __get($key) {
+      if ($this->reflect->hasProperty($key))
+            return $this->{$key};
+     return null;
+  }
+  public function __set($key,$value) {
+      if ($this->reflect->hasProperty($key))
+            $this->{$key} = $value;
+  }
+  public function __isset($key) {
+      if ($this->reflect->hasProperty($key))
+            return isset($this->{$key});
+      return null;
+  }
+  public function __unset($key) {
+      if ($this->reflect->hasProperty($key))
+            unset($this->{$key});
+  }
 
   /**
    * Initializes a Curl object
-   *
-   * Also sets the $user_agent to $_SERVER['HTTP_USER_AGENT'] if it exists,
-   * 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)' otherwise
    *
    * @param debug - turn debug on - will collect a debug log in the response.
    * @param with_headers - switch whether to collect headers or not.
   **/
   public function __construct($debug = false, $with_headers = false)
   {
+    $this->reflect = new ReflectionObject($this);
     self::$debug = $debug;
     self::$with_headers = $with_headers;
     $this->composeUserAgent();
   }
+
 
 
   /**
@@ -165,81 +120,6 @@ class Curl
     }
 
   }
-  /**
-   * Weather to validate ssl certificates
-   *
-   * @param bool $val whether to validate SSL certificates
-   * @return void
-  **/
-  public function setValidateSsl($val)
-  {
-    return $this->validate_ssl = $val;
-  }
-
-
-  /**
-   * Get the user agent to send along with requests
-  **/
-  public function getUserAgent()
-  {
-    return $this->user_agent;
-  }
-
-  /**
-   * Set the user agent to send along with requests
-  **/
-  public function setUserAgent($user_agent)
-  {
-    $this->user_agent = $user_agent;
-  }
-
-  /**
-   * Get the referer header to send along with requests
-  **/
-  public function getReferer()
-  {
-    return $this->referer;
-  }
-
-  /**
-   * Set the referer header to send along with requests
-  **/
-  public function setReferer($referer)
-  {
-    $this->referer = $referer;
-  }
-
-  /**
-   * Get HTTP-Headers as associative array
-  **/
-  public function getHeaders()
-  {
-    return $this->headers;
-  }
-
-  /**
-   * Set HTTP-Headers as associative array
-  **/
-  public function setHeaders($headers)
-  {
-    $this->headers = $headers;
-  }
-
-  /**
-   * Set HTTP-Header value
-  **/
-  public function setHeader($name, $value)
-  {
-    $this->headers[$name] = $value;
-  }
-
-  /**
-   * Get an associative array of CURLOPT options
-  **/
-  public function getOptions()
-  {
-    return $this->options;
-  }
 
   /**
    * Set an associative array of CURLOPT options
@@ -265,27 +145,6 @@ class Curl
   }
 
   /**
-   * Set whether or not requests should follow redirects
-   *
-   * @param bool $follow_redirects
-   * @return void
-  **/
-  public function setFollowRedirects($follow_redirects)
-  {
-    $this->follow_redirects = $follow_redirects;
-  }
-
-  /**
-   * Get whether or not requests should follow redirects
-   *
-   * @return bool
-  **/
-  public function getFollowRedirects()
-  {
-    return $this->follow_redirects;
-  }
-
-  /**
    * Set the file to read and write cookies to for requests
    *
    * @param string|bool $cookie_file path string or true (default location) | false (no cookie file)
@@ -306,17 +165,6 @@ class Curl
       $this->cookie_file = $cookie_file;
     }
   }
-
-  /**
-   * Get the file to read and write cookies to for requests
-   *
-   * @return string file-location
-  **/
-  public function getCookieFile()
-  {
-    return $this->cookie_file;
-  }
-
 
   /**
    * Makes an HTTP DELETE request to the specified $url with an optional array or string of $vars
