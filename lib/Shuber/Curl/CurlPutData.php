@@ -9,8 +9,8 @@ namespace Shuber\Curl;
  * @author Fabian Grassl
  * @author Nick Lombard <curling@jigsoft.co.za>
 **/
-class CurlPutData {
-
+class CurlPutData
+{
   /**
    * Stores resource handle for the file
    *
@@ -50,6 +50,7 @@ class CurlPutData {
   {
     $resource_size = filesize($filename);
     $resource = fopen($filename, 'r');
+
     return new self($resource, $resource_size);
   }
 
@@ -64,6 +65,7 @@ class CurlPutData {
     $resource = tmpfile();
     fwrite($resource, $string);
     fseek($resource, 0);
+
     return new self($resource, $resource_size);
   }
 

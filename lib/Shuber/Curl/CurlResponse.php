@@ -46,7 +46,6 @@ class CurlResponse
                  'extension-header' => null,
          );
 
-
   /**
    * Accepts the result of a curl request as a string
    *
@@ -60,24 +59,19 @@ class CurlResponse
   **/
   function __construct($response, $outstr = null)
   {
-    if (isset($outstr))
-    {
-      if (Curl::$debug)
-      {
+    if (isset($outstr)) {
+      if (Curl::$debug) {
         $this->debug_log = \preg_replace('/^([^\*|>|<])/m', '> $1', $outstr);
       }
-      if (Curl::$with_headers)
-      {
+      if (Curl::$with_headers) {
         $outstr = preg_replace('/\*.*$/m', '', $outstr);
 
         preg_match_all('/>[^<]*|<[^>]*/', $outstr, $matches);
-        $matches = array_map(function ($a)
-        {
+        $matches = array_map(function ($a) {
           return preg_replace('/<\s*|>\s*/m', '', $a);
         }, $matches[0]);
         $ttt = $matches;
-        if (($last = end($matches)) !== false)
-        {
+        if (($last = end($matches)) !== false) {
           $this->all_headers = $matches;
           # Extract headers from response
           preg_match_all('/\w.*$/m', end($this->all_headers), $matches);
@@ -92,8 +86,7 @@ class CurlResponse
           $this->headers['Reason-Phrase'] = $status[2];
 
           # Convert headers into an associative array
-          foreach ($headers as $header)
-          {
+          foreach ($headers as $header) {
             preg_match('/(.*?)\:\s(.*)\r/', $header, $matches);
             $this->headers[$matches[1]] = $matches[2];
           }
@@ -126,12 +119,9 @@ class CurlResponse
   public function isHtml()
   {
     $type = $this->headers['Content-Type'] ?: '';
-    if (preg_match('/(x|ht)ml/i', $type))
-    {
+    if (preg_match('/(x|ht)ml/i', $type)) {
       return true;
-    }
-    else
-    {
+    } else {
       return false;
     }
   }
@@ -139,12 +129,14 @@ class CurlResponse
   /**
    * Retrieve the content type of the response.
   **/
-  public function getMimeType() {
+  public function getMimeType()
+  {
     $type = $this->headers['Content-Type'] ?: false;
     if ($type) {
       list($type) = explode(";", $type);
       $type = trim($type);
     }
+
     return $type;
   }
 }

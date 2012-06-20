@@ -15,8 +15,8 @@ use \ReflectionObject;
  * @author Fabian Grassl
  * @author Nick Lombard <curling@jigsoft.co.za>
 **/
-class Curl {
-
+class Curl
+{
   private   $reflect = null;
 
   protected $cookie_file = null,
@@ -48,30 +48,33 @@ class Curl {
                   'User-Agent' => null,
             );
 
-
-
   public static $debug = false,
                 $with_headers = false;
-
 
   /**
     * Magic methods for object member access,
     */
-  public function __get($key) {
+  public function __get($key)
+  {
       if ($this->reflect->hasProperty($key))
+
             return $this->{$key};
      return null;
   }
-  public function __set($key,$value) {
+  public function __set($key,$value)
+  {
       if ($this->reflect->hasProperty($key))
             $this->{$key} = $value;
   }
-  public function __isset($key) {
+  public function __isset($key)
+  {
       if ($this->reflect->hasProperty($key))
+
             return isset($this->{$key});
       return null;
   }
-  public function __unset($key) {
+  public function __unset($key)
+  {
       if ($this->reflect->hasProperty($key))
             unset($this->{$key});
   }
@@ -90,8 +93,6 @@ class Curl {
     $this->composeUserAgent();
   }
 
-
-
   /**
    * Com.osing the User-Agent request header with software version info.
    *
@@ -108,7 +109,8 @@ class Curl {
    * To overwrite this behaviour simply set the User-Agent environment variable
    * to whatever you'd prefer, even empty string is sufficient.
   **/
-  private function composeUserAgent() {
+  private function composeUserAgent()
+  {
     if (empty($this->headers['User-Agent'])) {
       $user_agent = 'Shuber/Curl/1.0 (cURL/';
       $curl = \curl_version();
@@ -147,8 +149,7 @@ class Curl {
   **/
   public function setOptions($options)
   {
-    foreach ($options as $name => $value)
-    {
+    foreach ($options as $name => $value) {
       $this->setOption($name, $value);
     }
   }
@@ -158,8 +159,7 @@ class Curl {
   **/
   public function setOption($name, $value)
   {
-    if (is_string($name))
-    {
+    if (is_string($name)) {
       $name = constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($name)));
     }
     $this->options[$name] = $value;
@@ -173,16 +173,12 @@ class Curl {
   **/
   public function setCookieFile($cookie_file = null)
   {
-    if ($cookie_file === true)
-    {
+    if ($cookie_file === true) {
       $this->cookie_file = dirname(__FILE__).DIRECTORY_SEPARATOR.'curl_cookie.txt';
-    }
-    elseif (empty($cookie_file))
+    } elseif (empty($cookie_file))
     {
       $this->cookie_file = null;
-    }
-    else
-    {
+    } else {
       $this->cookie_file = $cookie_file;
     }
   }
@@ -226,11 +222,11 @@ class Curl {
   **/
   protected function create_get_url($url, $vars = array())
   {
-    if (!empty($vars))
-    {
+    if (!empty($vars)) {
       $url .= (stripos($url, '?') !== false) ? '&' : '?';
       $url .= (is_string($vars)) ? $vars : http_build_query($vars, '', '&');
     }
+
     return $url;
   }
 
@@ -288,24 +284,20 @@ class Curl {
   **/
   public function request($method, $url, $post_vars = array(), $put_data = null)
   {
-    if (null !== $put_data && is_string($put_data))
-    {
+    if (null !== $put_data && is_string($put_data)) {
       $put_data = CurlPutData::fromString($put_data);
     }
     $this->request = curl_init();
 
-    if (is_array($post_vars))
-    {
+    if (is_array($post_vars)) {
       $post_vars = http_build_query($post_vars, '', '&');
     }
 
-    if (is_array($put_data))
-    {
+    if (is_array($put_data)) {
       $put_data = http_build_query($put_data, '', '&');
     }
 
-    if (self::$debug||self::$with_headers)
-    {
+    if (self::$debug||self::$with_headers) {
       $out = fopen("php://temp", 'rw');
       $this->setOption('CURLOPT_STDERR', $out);
       $this->setOption('CURLOPT_VERBOSE', true);
@@ -316,21 +308,17 @@ class Curl {
 
     $response = curl_exec($this->request);
 
-    if (!$response)
-    {
+    if (!$response) {
       throw new CurlException(curl_error($this->request), curl_errno($this->request));
     }
 
-    if (isset($out))
-    {
+    if (isset($out)) {
       rewind($out);
       $outstr = stream_get_contents($out);
       fclose($out);
       $response = new CurlResponse($response, $outstr);
       unset($outstr);
-    }
-    else
-    {
+    } else {
       $response = new CurlResponse($response);
     }
 
@@ -348,13 +336,14 @@ class Curl {
   **/
   function setAuth($username, $password=null)
   {
-    if (null === $username)
-    {
+    if (null === $username) {
       $this->userpwd = null;
+
       return $this;
     }
 
     $this->userpwd = $username.':'.$password;
+
     return $this;
   }
 
@@ -367,8 +356,7 @@ class Curl {
   protected function setRequestHeaders()
   {
     $headers = array();
-    foreach ($this->headers as $key => $value)
-    {
+    foreach ($this->headers as $key => $value) {
 
       if (isset($value)
             && !in_array($key, array('User-Agent', 'Referer')))
@@ -387,8 +375,7 @@ class Curl {
   **/
   protected function setRequestMethod($method)
   {
-    switch ($method)
-    {
+    switch ($method) {
       case 'HEAD':
       case 'OPTIONS':
         curl_setopt($this->request, CURLOPT_NOBODY, true);
@@ -421,16 +408,12 @@ class Curl {
   {
     $purl = parse_url($url);
 
-    if (!empty($purl['scheme']) && $purl['scheme'] == 'https')
-    {
+    if (!empty($purl['scheme']) && $purl['scheme'] == 'https') {
       curl_setopt($this->request, CURLOPT_PORT , empty($purl['port'])?443:$purl['port']);
-      if ($this->validate_ssl)
-      {
+      if ($this->validate_ssl) {
         curl_setopt($this->request,CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($this->request, CURLOPT_CAINFO, dirname(__FILE__).'/cacert.pem');
-      }
-      else
-      {
+      } else {
         curl_setopt($this->request, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($this->request, CURLOPT_SSL_VERIFYHOST, 2);
       }
@@ -441,30 +424,24 @@ class Curl {
 
     curl_setopt($this->request, CURLOPT_URL, $url);
 
-    if (!empty($vars))
-    {
-        if ('POST' != $method)
-        {
+    if (!empty($vars)) {
+        if ('POST' != $method) {
           throw new InvalidArgumentException('POST-vars may only be set for a POST-Request.');
         }
         curl_setopt($this->request, CURLOPT_POSTFIELDS, $vars);
-    }
-    elseif ('POST' == $method)
+    } elseif ('POST' == $method)
     {
       throw new InvalidArgumentException('POST-vars must be set for a POST-Request.');
     }
 
 
-    if (null !== $put_data)
-    {
-      if ('PUT' != $method)
-      {
+    if (null !== $put_data) {
+      if ('PUT' != $method) {
         throw new InvalidArgumentException('PUT-data may only be set for a PUT-Request.');
       }
       curl_setopt($this->request, CURLOPT_INFILE, $put_data->getResource());
       curl_setopt($this->request, CURLOPT_INFILESIZE, $put_data->getResourceSize());
-    }
-    elseif ('PUT' == $method)
+    } elseif ('PUT' == $method)
     {
         throw new InvalidArgumentException('PUT-data must be set for a PUT-Request.');
     }
@@ -475,35 +452,28 @@ class Curl {
     curl_setopt($this->request, CURLOPT_USERAGENT, 'User-Agent: '. $this->header['User-Agent']);
     curl_setopt($this->request, CURLOPT_TIMEOUT, 30);
 
-    if ($this->cookie_file)
-    {
+    if ($this->cookie_file) {
       curl_setopt($this->request, CURLOPT_COOKIEFILE, $this->cookie_file);
       curl_setopt($this->request, CURLOPT_COOKIEJAR, $this->cookie_file);
     }
 
-    if ($this->follow_redirects)
-    {
+    if ($this->follow_redirects) {
       curl_setopt($this->request, CURLOPT_FOLLOWLOCATION, true);
     }
 
-    if ($this->headers['Referer'])
-    {
+    if ($this->headers['Referer']) {
       curl_setopt($this->request, CURLOPT_REFERER, 'Referer: '.$this->headers['Referer']);
     }
 
-    if ($this->userpwd)
-    {
+    if ($this->userpwd) {
       curl_setopt($this->request, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
       curl_setopt($this->request, CURLOPT_USERPWD, $this->userpwd);
-    }
-    else
-    {
+    } else {
       curl_setopt($this->request, CURLOPT_HTTPAUTH, false);
     }
 
-	# Set any custom CURL options
-    foreach ($this->options as $option => $value)
-    {
+    # Set any custom CURL options
+    foreach ($this->options as $option => $value) {
       curl_setopt($this->request, $option, $value);
     }
   }
@@ -514,7 +484,8 @@ class Curl {
    *
    * @return array Associative array of curl options
   **/
-  function getRequestOptions() {
+  function getRequestOptions()
+  {
     return curl_getinfo($this->request);
   }
 
