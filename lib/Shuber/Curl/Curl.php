@@ -17,17 +17,38 @@ use \ReflectionObject;
 **/
 class Curl {
 
+  private   $reflect = null;
+
   protected $cookie_file = null,
             $follow_redirects = true,
-            $headers = array(),
-            $options = array(),
-            $referer = null,
-            $user_agent = null,
             $validate_ssl = false,
             $request = null,
             $userpwd = false;
 
-  private   $reflect = null;
+  public    $options = array(),
+            $headers = array(
+                  'Accept' => null,
+                  'Accept-Charset' => null,
+                  'Accept-Encoding' => null,
+                  'Accept-Language' => null,
+                  'Authorization' => null,
+                  'Expect' => null,
+                  'From' => null,
+                  'Host' => null,
+                  'If-Match' => null,
+                  'If-Modified-Since' => null,
+                  'If-None-Match' => null,
+                  'If-Range' => null,
+                  'If-Unmodified-Since' => null,
+                  'Max-Forwards' => null,
+                  'Proxy-Authorization' => null,
+                  'Range' => null,
+                  'Referer' => null,
+                  'TE' => null,
+                  'User-Agent' => null,
+            );
+
+
 
   public static $debug = false,
                 $with_headers = false;

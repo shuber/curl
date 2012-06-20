@@ -13,39 +13,39 @@ namespace Shuber\Curl;
 class CurlResponse
 {
 
-  /**
-   * The body of the response without the headers block
-   *
-   * @var string
-  **/
-  public $body = '';
+  public $body = '',
+         $debug_log = '',
+         $all_headers = array(),
+         $headers = array(
+                 'Status-Line' => null,
+                  // status line parsed
+                 'Http-Version' => null,
+                 'Status-Code' => null,
+                 'Status' => null,
+                  // response header fields
+                 'Accept-Ranges' => null,
+                 'Age' => null,
+                 'ETag' => null,
+                 'Location' => null,
+                 'Proxy-Authenticate' => null,
+                 'Retry-After' => null,
+                 'Server' => null,
+                 'Vary' => null,
+                 'WWW-Authenticate' => null,
+                  // entity header fields
+                 'Allow' => null,
+                 'Content-Encoding' => null,
+                 'Content-Language' => null,
+                 'Content-Length' => null,
+                 'Content-Location' => null,
+                 'Content-MD5' => null,
+                 'Content-Range' => null,
+                 'Content-Type' => null,
+                 'Expires' => null,
+                 'Last-Modified' => null,
+                 'extension-header' => null,
+         );
 
-  /**
-   * The debug log view if any.
-   *
-   * @var string
-  **/
-  public $debug_log = '';
-
-  /**
-   * An associative array containing the response's headers.
-   *
-   * @var array
-  **/
-  public $headers = array(
-          'Http-Version' => null,
-          'Status-Code' => null,
-          'Status' => null,
-          'Content-Type' => null,
-          'Content-Length' => null,
-      );
-
-  /**
-   * An array containing the raw request and response headers.
-   *
-   * @var array
-  **/
-  public $all_headers = array();
 
   /**
    * Accepts the result of a curl request as a string
