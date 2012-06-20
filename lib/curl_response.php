@@ -48,15 +48,25 @@ class CurlResponse {
         
         # Extract the version and status from the first header
         $version_and_status = array_shift($headers);
-        preg_match('#HTTP/(\d\.\d)\s(\d\d\d)\s(.*)#', $version_and_status, $matches);
-        $this->headers['Http-Version'] = $matches[1];
-        $this->headers['Status-Code'] = $matches[2];
-        $this->headers['Status'] = $matches[2].' '.$matches[3];
+        if (preg_match('#HTTP/(\d\.\d)\s(\d\d\d)\s(.*)#', $version_and_status, $matches)) {
+            $this->headers['Http-Version'] = $matches[1];
+            $this->headers['Status-Code'] = $matches[2];
+            $this->headers['Status'] = $matches[2].' '.$matches[3];
+        } else {
+            $this->headers['Http-Version'] = null;
+            $this->headers['Status'] = null;
+            $this->headers['Status-Code'] = null;        
+        }
         
+        # Set default
+        $this->headers['Content-Type'] = null;
+        $this->headers['Content-Length'] = 0;
+                
         # Convert headers into an associative array
         foreach ($headers as $header) {
-            preg_match('#(.*?)\:\s(.*)#', $header, $matches);
-            $this->headers[$matches[1]] = $matches[2];
+            if (preg_match('#(.*?)\:\s(.*)#', $header, $matches)) {
+                $this->headers[$matches[1]] = $matches[2];
+            }
         }
     }
     
