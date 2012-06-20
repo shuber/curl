@@ -32,7 +32,13 @@ class CurlResponse
    *
    * @var array
   **/
-  public $headers = array();
+  public $headers = array(
+          'Http-Version' => null,
+          'Status-Code' => null,
+          'Status' => null,
+          'Content-Type' => null,
+          'Content-Length' => null,
+      );
 
   /**
    * An array containing the raw request and response headers.
