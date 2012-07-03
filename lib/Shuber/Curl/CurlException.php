@@ -2,6 +2,7 @@
 
 namespace Shuber\Curl;
 
+use \Exception;
 /**
  * Curl error messoges wrapped as a CurlException.
  *
