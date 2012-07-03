@@ -122,6 +122,19 @@ class CurlResponse {
   }
 
   /**
+   * Determine if the response is html.
+   * */
+  public function isJson() {
+    $type = $this->headers['Content-Type'] ? : '';
+    if (preg_match('/json/i', $type)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  /**
    * Retrieve the content type of the response.
    * */
   public function getMimeType() {
