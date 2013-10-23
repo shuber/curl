@@ -14,12 +14,14 @@ Add this line to your composer.json:
 }
 ```
 
+Run `php composer.phar update shuber/curl`
+
 
 ## Usage
 
 ### Initialization
 
-Composer should autoload the package, so you just need to include it
+Composer should autoload the package, so you just need to include it.
 
 	use shuber\Curl\Curl;
 
