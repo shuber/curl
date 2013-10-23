@@ -1,5 +1,8 @@
 <?php
 
+
+namespace shuber\Curl;
+
 /**
  * A basic CURL wrapper
  *
@@ -9,49 +12,49 @@
  * @author Sean Huber <shuber@huberry.com>
 **/
 class Curl {
-    
+
     /**
      * The file to read and write cookies to for requests
      *
      * @var string
     **/
     public $cookie_file;
-    
+
     /**
      * Determines whether or not requests should follow redirects
      *
      * @var boolean
     **/
     public $follow_redirects = true;
-    
+
     /**
      * An associative array of headers to send along with requests
      *
      * @var array
     **/
     public $headers = array();
-    
+
     /**
      * An associative array of CURLOPT options to send along with requests
      *
      * @var array
     **/
     public $options = array();
-    
+
     /**
      * The referer header to send along with requests
      *
      * @var string
     **/
     public $referer;
-    
+
     /**
      * The user agent to send along with requests
      *
      * @var string
     **/
     public $user_agent;
-    
+
     /**
      * Stores an error string for the last request if one occurred
      *
@@ -59,7 +62,7 @@ class Curl {
      * @access protected
     **/
     protected $error = '';
-    
+
     /**
      * Stores resource handle for the current CURL request
      *
@@ -67,7 +70,7 @@ class Curl {
      * @access protected
     **/
     protected $request;
-    
+
     /**
      * Initializes a Curl object
      *
@@ -78,20 +81,20 @@ class Curl {
         $this->cookie_file = dirname(__FILE__).DIRECTORY_SEPARATOR.'curl_cookie.txt';
         $this->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)';
     }
-    
+
     /**
      * Makes an HTTP DELETE request to the specified $url with an optional array or string of $vars
      *
      * Returns a CurlResponse object if the request was successful, false otherwise
      *
      * @param string $url
-     * @param array|string $vars 
+     * @param array|string $vars
      * @return CurlResponse object
     **/
     function delete($url, $vars = array()) {
         return $this->request('DELETE', $url, $vars);
     }
-    
+
     /**
      * Returns the error string of the current request if one occurred
      *
@@ -100,14 +103,14 @@ class Curl {
     function error() {
         return $this->error;
     }
-    
+
     /**
      * Makes an HTTP GET request to the specified $url with an optional array or string of $vars
      *
      * Returns a CurlResponse object if the request was successful, false otherwise
      *
      * @param string $url
-     * @param array|string $vars 
+     * @param array|string $vars
      * @return CurlResponse
     **/
     function get($url, $vars = array()) {
@@ -117,7 +120,7 @@ class Curl {
         }
         return $this->request('GET', $url);
     }
-    
+
     /**
      * Makes an HTTP HEAD request to the specified $url with an optional array or string of $vars
      *
@@ -130,31 +133,31 @@ class Curl {
     function head($url, $vars = array()) {
         return $this->request('HEAD', $url, $vars);
     }
-    
+
     /**
      * Makes an HTTP POST request to the specified $url with an optional array or string of $vars
      *
      * @param string $url
-     * @param array|string $vars 
+     * @param array|string $vars
      * @return CurlResponse|boolean
     **/
     function post($url, $vars = array()) {
         return $this->request('POST', $url, $vars);
     }
-    
+
     /**
      * Makes an HTTP PUT request to the specified $url with an optional array or string of $vars
      *
      * Returns a CurlResponse object if the request was successful, false otherwise
      *
      * @param string $url
-     * @param array|string $vars 
+     * @param array|string $vars
      * @return CurlResponse|boolean
     **/
     function put($url, $vars = array()) {
         return $this->request('PUT', $url, $vars);
     }
-    
+
     /**
      * Makes an HTTP request of the specified $method to a $url with an optional array or string of $vars
      *
@@ -169,24 +172,24 @@ class Curl {
         $this->error = '';
         $this->request = curl_init();
         if (is_array($vars)) $vars = http_build_query($vars, '', '&');
-        
+
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
         $this->set_request_headers();
-        
+
         $response = curl_exec($this->request);
-        
+
         if ($response) {
             $response = new CurlResponse($response);
         } else {
             $this->error = curl_errno($this->request).' - '.curl_error($this->request);
         }
-        
+
         curl_close($this->request);
-        
+
         return $response;
     }
-    
+
     /**
      * Formats and adds custom headers to the current request
      *
@@ -200,7 +203,7 @@ class Curl {
         }
         curl_setopt($this->request, CURLOPT_HTTPHEADER, $headers);
     }
-    
+
     /**
      * Set the associated CURL options for a request method
      *
@@ -223,7 +226,7 @@ class Curl {
                 curl_setopt($this->request, CURLOPT_CUSTOMREQUEST, $method);
         }
     }
-    
+
     /**
      * Sets the CURLOPT options for the current request
      *
@@ -235,7 +238,7 @@ class Curl {
     protected function set_request_options($url, $vars) {
         curl_setopt($this->request, CURLOPT_URL, $url);
         if (!empty($vars)) curl_setopt($this->request, CURLOPT_POSTFIELDS, $vars);
-        
+
         # Set some default CURL options
         curl_setopt($this->request, CURLOPT_HEADER, true);
         curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
@@ -246,7 +249,7 @@ class Curl {
         }
         if ($this->follow_redirects) curl_setopt($this->request, CURLOPT_FOLLOWLOCATION, true);
         if ($this->referer) curl_setopt($this->request, CURLOPT_REFERER, $this->referer);
-        
+
         # Set any custom CURL options
         foreach ($this->options as $option => $value) {
             curl_setopt($this->request, constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($option))), $value);
