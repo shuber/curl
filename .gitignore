@@ -1,1 +1,6 @@
-lib/curl_cookie.txt
+curl_cookie.txt
+composer.lock
+composer.phar
+phpunit.xml
+vendor
+
