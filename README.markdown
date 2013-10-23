@@ -8,7 +8,10 @@ A basic CURL wrapper for PHP (see [http://php.net/curl](http://php.net/curl) for
 Add this line to your composer.json:
 
 ```
-"shuber/curl": "*",
+"require": {
+    // ...
+    "shuber/curl": "*"
+}
 ```
 
 
