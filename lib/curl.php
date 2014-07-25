@@ -181,7 +181,10 @@ class Curl {
         $this->set_request_options($url, $vars);
         $this->set_request_headers();
 
-        if($this->debug) curl_setopt($this->request, CURLOPT_VERBOSE, 1);
+        if($this->debug) {
+            curl_setopt($this->request, CURLOPT_VERBOSE, 1);
+            echo "\n$vars\n";
+        }
         
         $response = curl_exec($this->request);
         
