@@ -60,7 +60,7 @@ class CurlResponse {
         $this->debug_log = \preg_replace('/^([^\*|>|<])/m', '> $1', $outstr);
       }
       if (Curl::$with_headers) {
-        $outstr = preg_replace('/\*.*$/m', '', $outstr);
+        $outstr = preg_replace('/^\*.*$/m', '', $outstr);
 
         preg_match_all('/>[^<]*|<[^>]*/', $outstr, $matches);
         $matches = array_map(function ($a) {
