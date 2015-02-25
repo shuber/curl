@@ -2,7 +2,7 @@
 
 namespace Shuber\Curl;
 
-use \InvalidArgumentExceptionn;
+use \InvalidArgumentException;
 use \ReflectionObject;
 
 /**
@@ -424,7 +424,7 @@ class Curl
 
     if (!empty($vars)) {
         if ('POST' != $method) {
-          throw new InvalidArgumentExceptionn('POST-vars may only be set for a POST-Request.');
+          throw new InvalidArgumentException('POST-vars may only be set for a POST-Request.');
         }
         curl_setopt($this->request, CURLOPT_POSTFIELDS, $vars);
     } elseif ('POST' == $method)
