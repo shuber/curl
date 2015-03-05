@@ -1,9 +1,9 @@
 {
     "name": "Shuber\/Curl",
     "description": "A basic CURL wrapper for PHP (see [http:\/\/php.net\/curl](http:\/\/php.net\/curl) for more information about the libcurl extension for PHP)",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "type": "library",
-    "time": "2015-03-04 12:53:21",
+    "time": "2015-03-05 12:40:01",
     "homepage": "",
     "license": "MIT",
     "authors": [

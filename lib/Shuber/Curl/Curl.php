@@ -88,7 +88,6 @@ class Curl
     $this->reflect = new ReflectionObject($this);
     self::$debug = $debug;
     self::$with_headers = $with_headers;
-    $this->composeUserAgent();
   }
 
   /**
@@ -107,39 +106,36 @@ class Curl
    * To overwrite this behaviour simply set the User-Agent environment variable
    * to whatever you'd prefer, even empty string is sufficient.
   **/
-  private function composeUserAgent()
+  private function generateUserAgent()
   {
-    if (empty($this->headers['User-Agent'])) {
-      $user_agent = 'Shuber/Curl/1.0 (cURL/';
-      $curl = \curl_version();
-
-      if (isset($curl['version']))
-           $user_agent .= $curl['version'];
-
-      else
-           $user_agent .= '?.?.?';
-
-      $user_agent .= ' PHP/'.PHP_VERSION.' ('.PHP_OS.')';
-
-          if (isset($_SERVER['SERVER_SOFTWARE']))
-                  $user_agent .= ' '.\preg_replace('~PHP/[\d\.]+~U',
-                          '', $_SERVER['SERVER_SOFTWARE']);
-      else {
-
-        if (isset($_SERVER['TERM_PROGRAM']))
-                  $user_agent .= " {$_SERVER['TERM_PROGRAM']}";
-
-          if (isset($_SERVER['TERM_PROGRAM_VERSION']))
-                  $user_agent .= "/{$_SERVER['TERM_PROGRAM_VERSION']}";
-      }
-
-      if (isset($_SERVER['HTTP_USER_AGENT']))
-            $user_agent .= " {$_SERVER['HTTP_USER_AGENT']}";
-
-      $user_agent .= ')';
-      $this->headers['User-Agent'] = $user_agent;
-    }
-
+	$user_agent = 'Shuber/Curl/1.0 (cURL/';
+	$curl = \curl_version();
+	
+	if (isset($curl['version']))
+	   $user_agent .= $curl['version'];
+	
+	else
+	   $user_agent .= '?.?.?';
+	
+	$user_agent .= ' PHP/'.PHP_VERSION.' ('.PHP_OS.')';
+	
+	  if (isset($_SERVER['SERVER_SOFTWARE']))
+	          $user_agent .= ' '.\preg_replace('~PHP/[\d\.]+~U',
+	                  '', $_SERVER['SERVER_SOFTWARE']);
+	else {
+	
+	if (isset($_SERVER['TERM_PROGRAM']))
+	          $user_agent .= " {$_SERVER['TERM_PROGRAM']}";
+	
+	  if (isset($_SERVER['TERM_PROGRAM_VERSION']))
+	          $user_agent .= "/{$_SERVER['TERM_PROGRAM_VERSION']}";
+	}
+	
+	if (isset($_SERVER['HTTP_USER_AGENT']))
+	    $user_agent .= " {$_SERVER['HTTP_USER_AGENT']}";
+	
+	$user_agent .= ')';
+	return $user_agent;
   }
 
   /**
@@ -447,7 +443,7 @@ class Curl
     # Set some default CURL options
     curl_setopt($this->request, CURLOPT_HEADER, false);
     curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($this->request, CURLOPT_USERAGENT, $this->headers['User-Agent']);
+    curl_setopt($this->request, CURLOPT_USERAGENT, $this->headers['User-Agent'] ?: $this->generateUserAgent());
     curl_setopt($this->request, CURLOPT_TIMEOUT, 30);
 
     if ($this->cookie_file) {
