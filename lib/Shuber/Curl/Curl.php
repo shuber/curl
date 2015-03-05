@@ -92,16 +92,16 @@ class Curl
   }
 
   /**
-   * Com.osing the User-Agent request header with software version info.
+   * Composing the User-Agent request header with software version info.
    *
-   * We attempt to collect as much informaito as is pertinent but not
-   * collecting anfthing usseless. First and foremost we send the Shuber/Curl
-   * version info and attempt to locate the libcurl anh PHP versions. If the
+   * We attempt to collect as much information as is pertinent but not
+   * collecting anything usseless. First and foremost we send the Shuber/Curl
+   * version info and attempt to locate the libcurl and PHP versions. If the
    * SERVER_SOFTWARE variable is populated we are likely on CGI if that is
    * empty we will attempt to retrieve CLI Terminal information.
    *
    * HTTP_USER_AGENT is added if available which will give the server ample
-   * information to try and resove any issues that might be rolated to the
+   * information to try and resove any issues that might be related to the
    * software supporting this library.
    *
    * To overwrite this behaviour simply set the User-Agent environment variable
@@ -137,7 +137,7 @@ class Curl
             $user_agent .= " {$_SERVER['HTTP_USER_AGENT']}";
 
       $user_agent .= ')';
-      $headers[] = $user_agent;
+      $this->headers['User-Agent'] = $user_agent;
     }
 
   }
@@ -410,7 +410,7 @@ class Curl
       curl_setopt($this->request, CURLOPT_PORT , empty($purl['port'])?443:$purl['port']);
       if ($this->validate_ssl) {
         curl_setopt($this->request,CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($this->request, CURLOPT_CAINFO, dirname(__FILE__).'/cacert.pem');
+        curl_setopt($this->request, CURLOPT_CAINFO, dirname( dirname( dirname(__FILE__) ) ).'/cacert.pem');
       } else {
         curl_setopt($this->request, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($this->request, CURLOPT_SSL_VERIFYHOST, 2);
@@ -447,7 +447,7 @@ class Curl
     # Set some default CURL options
     curl_setopt($this->request, CURLOPT_HEADER, false);
     curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($this->request, CURLOPT_USERAGENT, 'User-Agent: '. $this->header['User-Agent']);
+    curl_setopt($this->request, CURLOPT_USERAGENT, $this->headers['User-Agent']);
     curl_setopt($this->request, CURLOPT_TIMEOUT, 30);
 
     if ($this->cookie_file) {
@@ -460,7 +460,7 @@ class Curl
     }
 
     if ($this->headers['Referer']) {
-      curl_setopt($this->request, CURLOPT_REFERER, 'Referer: '.$this->headers['Referer']);
+      curl_setopt($this->request, CURLOPT_REFERER, $this->headers['Referer']);
     }
 
     if ($this->userpwd) {
