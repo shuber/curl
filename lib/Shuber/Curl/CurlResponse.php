@@ -74,7 +74,7 @@ class CurlResponse {
           reset($this->all_headers);
           $headers = array_pop($matches);
           # Extract the version and status from the first header
-          $status  = trim(array_shift($headers));
+          for( $status = ""; preg_match( "#^HTTP/#", trim( $headers[0] ) ); $status = trim(array_shift($headers)) );
           $this->headers['Status-Line'] = $status;
           $status  = preg_split('/\s/', $status, 3);
           $this->headers['Http-Version'] = $status[0];
