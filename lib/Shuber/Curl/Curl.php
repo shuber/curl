@@ -302,7 +302,7 @@ class Curl
 
     $response = curl_exec($this->request);
 
-    if (!$response) {
+    if (curl_errno($this->request)) {
       throw new CurlException(curl_error($this->request), curl_errno($this->request));
     }
 
