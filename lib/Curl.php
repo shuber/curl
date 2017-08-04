@@ -1,5 +1,9 @@
 <?php
 
+namespace Curl;
+
+use Curl\CurlResponse;
+
 /**
  * A basic CURL wrapper
  *
