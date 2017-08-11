@@ -48,7 +48,14 @@ class Curl {
      * @var string
     **/
     public $referer;
-    
+
+    /**
+     * The default timeout 5s
+     *
+     * @var int
+     **/
+    public $timeout = 5;
+
     /**
      * The user agent to send along with requests
      *
@@ -78,7 +85,7 @@ class Curl {
      * Sets the $cookie_file to "curl_cookie.txt" in the current directory
      * Also sets the $user_agent to $_SERVER['HTTP_USER_AGENT'] if it exists, 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)' otherwise
     **/
-    function __construct() {
+    public function __construct() {
         $this->cookie_file = dirname(__FILE__).DIRECTORY_SEPARATOR.'curl_cookie.txt';
         $this->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Curl/PHP '.PHP_VERSION.' (http://github.com/shuber/curl)';
     }
@@ -92,7 +99,7 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse object
     **/
-    function delete($url, $vars = array()) {
+    public function delete($url, $vars = array()) {
         return $this->request('DELETE', $url, $vars);
     }
     
@@ -101,7 +108,7 @@ class Curl {
      *
      * @return string
     **/
-    function error() {
+    public function error() {
         return $this->error;
     }
     
@@ -114,7 +121,7 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse
     **/
-    function get($url, $vars = array()) {
+    public function get($url, $vars = array()) {
         if (!empty($vars)) {
             $url .= (stripos($url, '?') !== false) ? '&' : '?';
             $url .= (is_string($vars)) ? $vars : http_build_query($vars, '', '&');
@@ -131,7 +138,7 @@ class Curl {
      * @param array|string $vars
      * @return CurlResponse
     **/
-    function head($url, $vars = array()) {
+    public function head($url, $vars = array()) {
         return $this->request('HEAD', $url, $vars);
     }
     
@@ -142,7 +149,7 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse|boolean
     **/
-    function post($url, $vars = array()) {
+    public function post($url, $vars = array()) {
         return $this->request('POST', $url, $vars);
     }
     
@@ -155,7 +162,7 @@ class Curl {
      * @param array|string $vars 
      * @return CurlResponse|boolean
     **/
-    function put($url, $vars = array()) {
+    public function put($url, $vars = array()) {
         return $this->request('PUT', $url, $vars);
     }
     
@@ -169,7 +176,7 @@ class Curl {
      * @param array|string $vars
      * @return CurlResponse|boolean
     **/
-    function request($method, $url, $vars = array()) {
+    public function request($method, $url, $vars = array()) {
         $this->error = '';
         $this->request = curl_init();
         if (is_array($vars)) $vars = http_build_query($vars, '', '&');
@@ -177,7 +184,8 @@ class Curl {
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
         $this->set_request_headers();
-        
+        $this->set_request_timeout();
+
         $response = curl_exec($this->request);
         
         if ($response) {
@@ -255,6 +263,16 @@ class Curl {
         foreach ($this->options as $option => $value) {
             curl_setopt($this->request, constant('CURLOPT_'.str_replace('CURLOPT_', '', strtoupper($option))), $value);
         }
+    }
+
+    /**
+     * Set timeout to the current request
+     *
+     * @return void
+     * @access protected
+     **/
+    protected function set_request_timeout() {
+        if(is_numeric($this->timeout)) curl_setopt($this->request, CURLOPT_TIMEOUT, $this->timeout);
     }
 
 }
