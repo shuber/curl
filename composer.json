@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A basic CURL wrapper for PHP Edit",
     "keywords": ["curl","php curl"],
-    "version": "1.0.0",
+    "version": "0.1.1",
     "require": {
 		"php": ">=5.3"
 	},
