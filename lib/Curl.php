@@ -20,6 +20,13 @@ class Curl {
      * @var string
     **/
     public $cookie_file;
+
+    /**
+     * The cookies string for requests
+     *
+     * @var string
+     **/
+    public $cookie;
     
     /**
      * Determines whether or not requests should follow redirects
@@ -255,6 +262,9 @@ class Curl {
         if ($this->cookie_file) {
             curl_setopt($this->request, CURLOPT_COOKIEFILE, $this->cookie_file);
             curl_setopt($this->request, CURLOPT_COOKIEJAR, $this->cookie_file);
+        }
+        if($this->cookie){
+            curl_setopt($this->request,CURLOPT_COOKIE, $this->cookie);
         }
         if ($this->follow_redirects) curl_setopt($this->request, CURLOPT_FOLLOWLOCATION, true);
         if ($this->referer) curl_setopt($this->request, CURLOPT_REFERER, $this->referer);
