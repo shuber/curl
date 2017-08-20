@@ -1,0 +1,13 @@
+{
+    "name": "duantianyu/curl",
+    "type": "library",
+    "description": "A basic CURL wrapper for PHP Edit",
+    "keywords": ["curl","php curl"],
+    "version": "0.1.1",
+    "require": {
+		"php": ">=5.3"
+	},
+    "autoload": {
+        "psr-4": {"Curl\\": "lib/"}
+    }
+}
