@@ -62,7 +62,7 @@ class CurlResponse {
       if (Curl::$with_headers) {
         $outstr = preg_replace('/^\*.*$/m', '', $outstr);
 
-        preg_match_all('/>[^<]*|<[^>]*/', $outstr, $matches);
+        preg_match_all('/>[^<]*|<[^$]*/', $outstr, $matches);
         $matches = array_map(function ($a) {
                   return preg_replace('/<\s*|>\s*/m', '', $a);
                 }, $matches[0]);
