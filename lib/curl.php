@@ -168,7 +168,23 @@ class Curl {
     function request($method, $url, $vars = array()) {
         $this->error = '';
         $this->request = curl_init();
-        if (is_array($vars)) $vars = http_build_query($vars, '', '&');
+
+        $json_payload = '';
+        if (strtolower('get') != 'get') {
+            foreach ($headers as $key => $value) {
+                if (strtolower($value) == 'application/json') {
+                    $json_payload = json_encode($vars);
+                }
+            }
+        }
+
+        if (is_array($vars)) {
+            if ($json_payload == '') {
+                $vars = http_build_query($vars, '', '&');
+            }else {
+                $vars = $json_payload;
+            }
+        }
         
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
