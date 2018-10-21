@@ -170,8 +170,8 @@ class Curl {
         $this->request = curl_init();
 
         $json_payload = '';
-        if (strtolower('get') != 'get') {
-            foreach ($headers as $key => $value) {
+        if (strtolower($method) != 'get') {
+            foreach ($this->headers as $key => $value) {
                 if (strtolower($value) == 'application/json') {
                     $json_payload = json_encode($vars);
                 }
