@@ -79,7 +79,6 @@ class CurlResponse {
           $status  = preg_split('/\s/', $status, 3);
           $this->headers['Http-Version'] = $status[0];
           $this->headers['Status-Code'] = $status[1];
-          $this->headers['Reason-Phrase'] = $status[2];
 
           # Convert headers into an associative array
           foreach ($headers as $header) {
