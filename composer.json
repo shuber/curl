@@ -58,6 +58,10 @@
         {
             "name": "Matthew Leffler",
             "email": "matthew@simpleupdates.com"
+        },
+        {
+            "name": "Carl Brugger",
+            "email": "carl@simpleupdates.com"
         }
     ],
     "autoload": {
