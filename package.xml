@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.10" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0        http://pear.php.net/dtd/tasks-1.0.xsd        http://pear.php.net/dtd/package-2.0        http://pear.php.net/dtd/package-2.0.xsd">
+  <name>Curl</name>
+  <channel>nickl-.github.com/pear</channel>
+  <summary>A basic CURL wrapper for PHP (see [http://php.net/curl](http://php.net/curl) for more information about the libcurl extension for PHP)</summary>
+  <description>A basic CURL wrapper for PHP (see [http://php.net/curl](http://php.net/curl) for more information about the libcurl extension for PHP)</description>
+  <lead>
+    <name>%aN</name>
+    <user/>
+    <email>%aE</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Adrian Pemsel</name>
+    <user/>
+    <email>adrian@adrianpemsel.de</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Ben Jeavons</name>
+    <user/>
+    <email>benjamin.jeavons@colorado.edu</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Hugo Chinchilla Carbonell</name>
+    <user/>
+    <email>hugo@bulma.net</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Jordi Rivero</name>
+    <user/>
+    <email>jrivero24@yahoo.es</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Kendall Hopkins</name>
+    <user/>
+    <email>softwareelves@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Sean Huber</name>
+    <user/>
+    <email>shuber@huberry.com</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Sebastian M. Alvarez</name>
+    <user/>
+    <email>sebastianmalvarez@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Simone Carletti</name>
+    <user/>
+    <email>weppos@weppos.net</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>fabeat</name>
+    <user/>
+    <email>fg@linkable.de</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>ide user ide_hamstar</name>
+    <user/>
+    <email>hamstar@telescum.co.nz</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>nickl-</name>
+    <user/>
+    <email>nick@jigsoft.co.za</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>shuber</name>
+    <user/>
+    <email>sean.huber@cox.net</email>
+    <active>yes</active>
+  </lead>
+  <date>2012-06-20</date>
+  <time>17:44:54</time>
+  <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+  </version>
+  <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+  </stability>
+  <license>MIT</license>
+  <notes>-</notes>
+  <contents>
+    <dir name="/">
+      <file name="lib/cacert.pem" role="php" md5sum="1f13709ead3158bb9d480d3df03708a6"/>
+      <file name="lib/Shuber/Curl/Curl.php" role="php" md5sum="dfda2156c2175f073903c6959d109550"/>
+      <file name="lib/Shuber/Curl/CurlException.php" role="php" md5sum="6a27f2f961c0171968bd59a02735e578"/>
+      <file name="lib/Shuber/Curl/CurlPutData.php" role="php" md5sum="8b0a361c71758efe323f23ac6bb045a0"/>
+      <file name="lib/Shuber/Curl/CurlResponse.php" role="php" md5sum="f6731903f3ce2ea602c64c5748955376"/>
+      <file name="test/CurlResponseTest.php" role="test" md5sum="80bbd277500ff81a267721949fa0b3a0"/>
+      <file name="test/CurlTest.php" role="test" md5sum="7880f1d7b18aa3fcb9b23be276eec687"/>
+    </dir>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.3</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.1</min>
+      </pearinstaller>
+    </required>
+  </dependencies>
+  <phprelease>
+    <filelist>
+      <install name="lib/cacert.pem" as="cacert.pem"/>
+      <install name="lib/Shuber/Curl/Curl.php" as="Shuber/Curl/Curl.php"/>
+      <install name="lib/Shuber/Curl/CurlException.php" as="Shuber/Curl/CurlException.php"/>
+      <install name="lib/Shuber/Curl/CurlPutData.php" as="Shuber/Curl/CurlPutData.php"/>
+      <install name="lib/Shuber/Curl/CurlResponse.php" as="Shuber/Curl/CurlResponse.php"/>
+      <install name="test/CurlResponseTest.php" as="CurlResponseTest.php"/>
+      <install name="test/CurlTest.php" as="CurlTest.php"/>
+    </filelist>
+  </phprelease>
+</package>

@@ -14,23 +14,23 @@ Click the `download` link above or `git clone git://github.com/shuber/curl.git`
 
 Simply require and initialize the `Curl` class like so:
 
-	require_once 'curl.php';
+	require_once 'autoload.php';
 	$curl = new Curl;
 
 
 ### Performing a Request
 
-The Curl object supports 5 types of requests: HEAD, GET, POST, PUT, and DELETE. You must specify a url to request and optionally specify an associative array or string of variables to send along with it.
+The Curl object supports 5 types of requests: HEAD, GET, POST, PUT, and DELETE. You must specify a url to request and optionally specify an associative array or string of variables to send along with it. The Curl object will append the array of $vars to the $url as a query string for all methods except POST.
 
 	$response = $curl->head($url, $vars = array());
-	$response = $curl->get($url, $vars = array()); # The Curl object will append the array of $vars to the $url as a query string
+	$response = $curl->get($url, $vars = array());
 	$response = $curl->post($url, $vars = array());
-	$response = $curl->put($url, $vars = array());
+	$response = $curl->put($url, $put_data, $vars = array());
 	$response = $curl->delete($url, $vars = array());
 
 To use a custom request methods, you can call the `request` method:
 
-	$response = $curl->request('YOUR_CUSTOM_REQUEST_TYPE', $url, $vars = array());
+	$response = $curl->request('YOUR_CUSTOM_REQUEST_TYPE', $url, $vars = array(), $put_data = null);
 
 All of the built in request methods like `put` and `get` simply wrap the `request` method. For example, the `post` method is implemented like:
 
@@ -44,7 +44,7 @@ Examples:
 
 	# The Curl object will append '&some_variable=some_value' to the url
 	$response = $curl->get('google.com?q=test', array('some_variable' => 'some_value'));
-	
+
 	$response = $curl->post('test.com/posts', array('title' => 'Test', 'body' => 'This is a test'));
 
 All requests return a CurlResponse object (see below) or false if an error occurred. You can access the error string with the `$curl->error()` method.
@@ -82,7 +82,7 @@ Which would display something like
 	    [Server] => gws
 	    [Connection] => close
 	)
-	
+
 The CurlResponse class defines the magic [__toString()](http://php.net/__toString) method which will return the response body, so `echo $response` is the same as `echo $response->body`
 
 
@@ -109,8 +109,8 @@ You may even set these headers manually if you wish (see below)
 
 You can set custom headers to send with the request
 
-	$curl->headers['Host'] = 12.345.678.90;
-	$curl->headers['Some-Custom-Header'] = 'Some Custom Value';
+	$curl->setHeader('Host', 12.345.678.90);
+	$curl->setHeader('Some-Custom-Header', 'Some Custom Value');
 
 
 ### Setting Custom CURL request options
@@ -122,10 +122,9 @@ By default, the `Curl` object will follow redirects. You can disable this by set
 You can set/override many different options for CURL requests (see the [curl_setopt documentation](http://php.net/curl_setopt) for a list of them)
 
 	# any of these will work
-	$curl->options['AUTOREFERER'] = true;
-	$curl->options['autoreferer'] = true;
-	$curl->options['CURLOPT_AUTOREFERER'] = true;
-	$curl->options['curlopt_autoreferer'] = true;
+	$curl->setOption('AUTOREFERER', true);
+	$curl->setOption('CURLOPT_AUTOREFERER', true);
+	$curl->setOption(CURLOPT_AUTOREFERER, true);
 
 
 ## Testing

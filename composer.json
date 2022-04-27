@@ -1,0 +1,72 @@
+{
+    "name": "Shuber\/Curl",
+    "description": "A basic CURL wrapper for PHP (see [http:\/\/php.net\/curl](http:\/\/php.net\/curl) for more information about the libcurl extension for PHP)",
+    "version": "1.0.5",
+    "type": "library",
+    "time": "2015-03-06 9:06:37",
+    "homepage": "",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adrian Pemsel",
+            "email": "adrian@adrianpemsel.de"
+        },
+        {
+            "name": "Ben Jeavons",
+            "email": "benjamin.jeavons@colorado.edu"
+        },
+        {
+            "name": "Hugo Chinchilla Carbonell",
+            "email": "hugo@bulma.net"
+        },
+        {
+            "name": "Jordi Rivero",
+            "email": "jrivero24@yahoo.es"
+        },
+        {
+            "name": "Kendall Hopkins",
+            "email": "softwareelves@gmail.com"
+        },
+        {
+            "name": "Sean Huber",
+            "email": "shuber@huberry.com"
+        },
+        {
+            "name": "Sebastian M. Alvarez",
+            "email": "sebastianmalvarez@gmail.com"
+        },
+        {
+            "name": "Simone Carletti",
+            "email": "weppos@weppos.net"
+        },
+        {
+            "name": "fabeat",
+            "email": "fg@linkable.de"
+        },
+        {
+            "name": "ide user ide_hamstar",
+            "email": "hamstar@telescum.co.nz"
+        },
+        {
+            "name": "nickl-",
+            "email": "nick@jigsoft.co.za"
+        },
+        {
+            "name": "shuber",
+            "email": "sean.huber@cox.net"
+        },
+        {
+            "name": "Matthew Leffler",
+            "email": "matthew@simpleupdates.com"
+        },
+        {
+            "name": "Carl Brugger",
+            "email": "carl@simpleupdates.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Shuber\\Curl": "lib\/"
+        }
+    }
+}
